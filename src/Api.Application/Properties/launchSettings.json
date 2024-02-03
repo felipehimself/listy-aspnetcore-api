@@ -16,7 +16,11 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5222",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_CONNECTION": "Server=localhost; initial catalog=listy_api; uid=root; pwd=123456",
+        "DATABASE": "MySql",
+        "MYSQL_VERSION": "8.0.34",
+        "MIGRATION": "APPLY"
       }
     },
     "IIS Express": {

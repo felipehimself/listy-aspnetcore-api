@@ -1,3 +1,4 @@
+using Api.CrossCutting.Configs;
 
 namespace Application;
 
@@ -13,6 +14,10 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddApiConnection();
+        builder.Services.AddApiDependencyInjection();
+        builder.Services.AddApiServices();
 
         var app = builder.Build();
 
