@@ -12,11 +12,11 @@ namespace Api.Domain.Dtos.User
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Nome é obrigatório")]
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Nome tem que ter pelo menos {2} e máximo de {1} caracteres")]
         public required string Name { get; set; }
 
         [Required(ErrorMessage = "Username é obrigatório")]
-        [StringLength(12)]
+        [StringLength(12, MinimumLength = 1, ErrorMessage = "Username tem que ter pelo menos {2} e máximo de {1} caracteres")]
         public required string Username { get; set; }
 
         [Required(ErrorMessage = "Email é obrigatório")]
@@ -25,8 +25,7 @@ namespace Api.Domain.Dtos.User
 
 
         [Required(ErrorMessage = "Senha obrigatória")]
-        [MinLength(6, ErrorMessage = "Mínimo de 6 caracteres")]
-        [MaxLength(12, ErrorMessage = "Máximo de 12 caracteres")]
+        [StringLength(12, MinimumLength = 6, ErrorMessage = "Mínimo de {2} e máximo de {1} caracteres")]
         public required string Password { get; set; }
 
 
