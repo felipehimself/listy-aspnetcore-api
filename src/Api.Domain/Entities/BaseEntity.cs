@@ -13,14 +13,12 @@ namespace Api.Domain.Entities
         [Key]
         public Guid Id { get; set; }
 
-        private DateTime _createdAt;
+        private DateTime? _createdAt;
         public DateTime? CreatedAt
         {
             get { return _createdAt; }
             set { _createdAt = value ?? DateTime.UtcNow; }
         }
-
-        private DateTime? _updatedAt;
 
         public DateTime? UpdatedAt { get; set; }
 

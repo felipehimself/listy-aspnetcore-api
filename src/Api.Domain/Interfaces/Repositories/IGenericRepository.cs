@@ -10,9 +10,9 @@ namespace Api.Domain.Interfaces.Repositories
     {
 
         Task<T> AddAsync(T entity);
-        Task<T> GetByIdAsync(Guid id);
-        Task<T> UpdateAsync(T entity);
-        Task<T> DeleteAsync(T entity);
+        Task<T?> GetByIdAsync(Guid id);
+        Task<T?> UpdateAsync(T entity);
+        Task<bool> DeleteAsync(Guid id);
         Task<IEnumerable<T>> GetAllAsync();
 
     }

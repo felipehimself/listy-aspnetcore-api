@@ -1,4 +1,5 @@
 using Api.CrossCutting.Configs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Application;
 
@@ -18,6 +19,16 @@ public class Program
         builder.Services.AddApiConnection();
         builder.Services.AddApiDependencyInjection();
         builder.Services.AddApiServices();
+
+        // Default for model state invalid
+        builder.Services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true; // This is the setting
+        });
+
+        // Default lowercase for endpoints
+        builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 
         var app = builder.Build();
 

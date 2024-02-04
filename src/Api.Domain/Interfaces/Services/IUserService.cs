@@ -1,14 +1,18 @@
 
+using Api.Domain.Dtos.User;
 using Api.Domain.Entities.User;
 
 namespace Api.Domain.Interfaces.Services
 {
     public interface IUserService
     {
-        Task<UserEntity> Get(Guid id);
+        Task<UserDto> GetUser(Guid id);
 
-        Task<UserEntity> Post(UserEntity user);
-        Task<UserEntity> Put(UserEntity user);
-        Task<bool> Delete(Guid id);
+        Task<UserCreateResultDto> AddUser(UserCreateDto user);
+        Task<UserUpdateResultDto?> UpdateUser(UserUpdateDto user);
+
+        Task<bool> DeleteUser(Guid id);
+
+        Task<IEnumerable<UserDto>> GetUsers();
     }
 }
