@@ -1,5 +1,6 @@
 using Api.Domain.Dtos.User;
 using Api.Domain.Entities.User;
+using Api.Domain.Exceptions;
 using Api.Domain.Interfaces.Repositories;
 using Api.Domain.Interfaces.Services;
 using AutoMapper;
@@ -45,12 +46,9 @@ namespace Api.Service.Services.User
 
         public async Task<UserCreateResultDto> AddUser(UserCreateDto user)
         {
-            // TODO
-
-            // Encrypt password
             var myEntity = _mapper.Map<UserEntity>(user);
 
-            var userCreated = await _repository.CreateNewUserAsync(myEntity);
+            var userCreated = await _repository.CreateNewUserAsync(myEntity) ?? throw new UserCreateException("Username or password already taken");
 
             return _mapper.Map<UserCreateResultDto>(userCreated);
 
