@@ -9,6 +9,8 @@ using Api.Domain.Entities.User;
 using Api.Domain.Interfaces.Services;
 using Api.Domain.Dtos.User;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Net;
+using Api.Domain.Exceptions;
 
 namespace Api.Application.Controllers
 {
@@ -44,7 +46,29 @@ namespace Api.Application.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(UserCreateDto user)
         {
-            return Ok(await _service.AddUser(user));
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                return Ok(await _service.AddUser(user));
+            }
+
+            catch (UserCreateException e)
+            {
+                return StatusCode((int)HttpStatusCode.NotAcceptable, e.Message);
+            }
+
+            catch (ArgumentException e)
+            {
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+
         }
 
         [HttpPut]
@@ -54,8 +78,6 @@ namespace Api.Application.Controllers
 
             return Ok(await _service.UpdateUser(user));
         }
-
-
 
 
     }
