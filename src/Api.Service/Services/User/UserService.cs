@@ -2,6 +2,7 @@ using Api.Domain.Dtos.User;
 using Api.Domain.Entities.User;
 using Api.Domain.Interfaces.Repositories;
 using Api.Domain.Interfaces.Services;
+using AutoMapper;
 
 namespace Api.Service.Services.User
 {
@@ -9,11 +10,13 @@ namespace Api.Service.Services.User
     {
 
         private readonly IUserRepository _repository;
+        private readonly IMapper _mapper;
 
 
-        public UserService(IUserRepository repository)
+        public UserService(IUserRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<bool> DeleteUser(Guid id)
@@ -24,101 +27,44 @@ namespace Api.Service.Services.User
         public async Task<UserDto> GetUser(Guid id)
         {
             var entity = await _repository.GetByIdAsync(id);
-            var dto = new UserDto
-            {
-                Id = entity.Id,
-                Username = entity.Username,
-                Name = entity.Name,
-                Email = entity.Email,
-                CreatedAt = entity.CreatedAt
-            };
+
+            var dto = _mapper.Map<UserDto>(entity);
 
             return dto;
         }
 
         public async Task<IEnumerable<UserDto>> GetUsers()
         {
-            var list = new List<UserDto>();
 
             var entities = await _repository.GetAllAsync();
 
-            foreach (var user in entities)
-            {
-
-                var userDto = new UserDto
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    Name = user.Name,
-                    Username = user.Username,
-                    CreatedAt = user.CreatedAt,
-                };
-
-                list.Add(userDto);
+            return _mapper.Map<IEnumerable<UserDto>>(entities);
 
 
-            }
-
-            return list;
         }
 
         public async Task<UserCreateResultDto> AddUser(UserCreateDto user)
         {
             // TODO
-            // Automapper
+
             // Encrypt password
-            var userEntity = new UserEntity
-            {
+            var myEntity = _mapper.Map<UserEntity>(user);
 
-                Email = user.Email,
-                Name = user.Name,
-                Password = user.Password,
-                Username = user.Username
-            };
+            var userCreated = await _repository.CreateNewUserAsync(myEntity);
 
-
-            var userCreated = await _repository.AddAsync(userEntity);
-
-            var teste = new UserCreateResultDto
-            {
-                Email = userCreated.Email,
-                Name = userCreated.Name,
-                Username = userCreated.Username,
-                CreatedAt = DateTime.UtcNow // ver se automapper vai resolver
-            };
-
-            return teste;
+            return _mapper.Map<UserCreateResultDto>(userCreated);
 
         }
 
         public async Task<UserUpdateResultDto?> UpdateUser(UserUpdateDto user)
         {
 
-            var entity = new UserEntity
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Name = user.Name,
-                Username = user.Username,
-                Password = user.Password
-            };
-
+            var entity = _mapper.Map<UserEntity>(user);
 
             var result = await _repository.UpdateAsync(entity);
 
-            if (result == null) return null;
+            return _mapper.Map<UserUpdateResultDto>(result);
 
-
-
-            return new UserUpdateResultDto
-            {
-                Id = result!.Id,
-                Email = result.Email,
-                Name = result.Name,
-                Username = result.Username,
-                UpdatedAt = result.UpdatedAt ?? DateTime.UtcNow
-
-            };
 
         }
     }

@@ -1,5 +1,7 @@
 using Api.CrossCutting.Configs;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Api.CrossCutting.Mapper.User;
 
 namespace Application;
 
@@ -21,13 +23,15 @@ public class Program
         builder.Services.AddApiServices();
 
         // Default for model state invalid
-        builder.Services.Configure<ApiBehaviorOptions>(options =>
-        {
-            options.SuppressModelStateInvalidFilter = true; // This is the setting
-        });
+        builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
         // Default lowercase for endpoints
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+        // Config Automapper
+        builder.Services.AddSingleton(ConfigMapper.ConfigApiMapper());
+
+
 
 
         var app = builder.Build();
