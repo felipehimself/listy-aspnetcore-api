@@ -29,9 +29,8 @@ namespace Api.Service.Services.User
         {
             var entity = await _repository.GetByIdAsync(id);
 
-            var dto = _mapper.Map<UserDto>(entity);
+            return _mapper.Map<UserDto>(entity);
 
-            return dto;
         }
 
         public async Task<IEnumerable<UserDto>> GetUsers()
@@ -46,9 +45,9 @@ namespace Api.Service.Services.User
 
         public async Task<UserCreateResultDto> AddUser(UserCreateDto user)
         {
-            var myEntity = _mapper.Map<UserEntity>(user);
+            var entity = _mapper.Map<UserEntity>(user);
 
-            var userCreated = await _repository.CreateNewUserAsync(myEntity) ?? throw new UserCreateException("Username or password already taken");
+            var userCreated = await _repository.CreateNewUserAsync(entity) ?? throw new UserCreateException("Username ou email inválido");
 
             return _mapper.Map<UserCreateResultDto>(userCreated);
 
