@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Domain.Entities.List;
 
 namespace Api.Domain.Entities.User
 {
@@ -21,6 +22,8 @@ namespace Api.Domain.Entities.User
 
         [Required]
         public string Password { get; set; }
+
+        public virtual List<ListEntity> Lists { get; set; }
 
     }
 }

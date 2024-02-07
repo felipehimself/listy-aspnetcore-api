@@ -3,6 +3,7 @@ using System;
 using Api.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20240206020147_List_Migration")]
+    partial class ListMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,8 +47,6 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Lists");
                 });
 
@@ -72,7 +73,7 @@ namespace Data.Migrations
 
                     b.HasIndex("ListId");
 
-                    b.ToTable("list_items", (string)null);
+                    b.ToTable("ListItems");
                 });
 
             modelBuilder.Entity("Api.Domain.Entities.User.UserEntity", b =>
@@ -110,17 +111,6 @@ namespace Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Api.Domain.Entities.List.ListEntity", b =>
-                {
-                    b.HasOne("Api.Domain.Entities.User.UserEntity", "User")
-                        .WithMany("Lists")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Api.Domain.Entities.List.ListItemEntity", b =>
                 {
                     b.HasOne("Api.Domain.Entities.List.ListEntity", "List")
@@ -135,11 +125,6 @@ namespace Data.Migrations
             modelBuilder.Entity("Api.Domain.Entities.List.ListEntity", b =>
                 {
                     b.Navigation("ListItems");
-                });
-
-            modelBuilder.Entity("Api.Domain.Entities.User.UserEntity", b =>
-                {
-                    b.Navigation("Lists");
                 });
 #pragma warning restore 612, 618
         }

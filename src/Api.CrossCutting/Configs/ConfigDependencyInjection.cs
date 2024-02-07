@@ -13,6 +13,9 @@ namespace Api.CrossCutting.Configs
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IListRepository, ListRepository>();
+            services.AddScoped<IListItemRepository, ListItemRepository>();
+            
             return services;
 
 
