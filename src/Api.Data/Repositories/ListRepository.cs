@@ -43,8 +43,6 @@ namespace Api.Data.Repositories
                 var listId = Guid.NewGuid();
                 list.Id = listId;
 
-                var myid = listId;
-
                 var now = DateTime.UtcNow;
                 list.CreatedAt = now;
 

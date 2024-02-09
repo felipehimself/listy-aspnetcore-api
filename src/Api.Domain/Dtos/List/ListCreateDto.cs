@@ -22,6 +22,6 @@ namespace Api.Domain.Dtos.List
 
         [Required]
         [MaxLength(5, ErrorMessage = "Necessário ao menos {1} itens")]
-        public IEnumerable<ListItemCreateDto> ListItems { get; set; }
+        public IEnumerable<string> ListItems { get; set; }
     }
 }

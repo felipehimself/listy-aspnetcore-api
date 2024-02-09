@@ -8,39 +8,35 @@ using AutoMapper;
 
 namespace Api.CrossCutting.Mapper.List
 {
-    public class ListEntityToDtoProfile : Profile
-    {
-        public ListEntityToDtoProfile()
+        public class ListEntityToDtoProfile : Profile
         {
-
-            CreateMap<ListItemEntity, ListItemCreateDto>()
-                     .ReverseMap();
-
-        //    CreateMap<ListEntity, ListCreateDto>()
-        //         .ReverseMap();
+                public ListEntityToDtoProfile()
+                {
 
 
-            CreateMap<ListEntity, ListCreateDto>()
-                    // .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-                    // .ForMember(dest => dest.ListItems, opt => opt.MapFrom(src => src.ListItems))
-                    .ReverseMap();
-            
-            CreateMap<ListEntity, ListDto>()
-                    // .ForMember(dest => dest.ListItems, opt => opt.MapFrom(src => src.ListItems))
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
-                    .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
-                    .ReverseMap();
+                        // Dto to Entity
+                        CreateMap<ListCreateDto, ListEntity>()
+                                .ForMember(dest => dest.ListItems, opt => opt.MapFrom(src => src.ListItems.Select(x => new ListItemEntity { Content = x })));
 
-            CreateMap<ListItemEntity, ListItemInListDto>()
-                    .ReverseMap();
-                    
+                        // Entity to dto
+                        CreateMap<ListEntity, ListCreateResultDto>();
 
-            CreateMap<ListEntity, ListCreateResultDto>()
-                   .ForMember(dest => dest.ListItems, opt => opt.MapFrom(src => src.ListItems))
-                   .ReverseMap();
+                        // Required for mapping from ListEntity to ListCreateResultDto
+                        CreateMap<ListItemEntity, ListItemCreateDto>()
+                                 .ReverseMap();
 
 
+                        // Entity to dto
+                        CreateMap<ListEntity, ListDto>()
+                                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
+                                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username));
+
+                        // Required for mapping from ListEntity to ListDto
+                        CreateMap<ListItemEntity, ListItemInListDto>()
+                                .ReverseMap();
+
+
+                }
         }
-    }
 }
 
