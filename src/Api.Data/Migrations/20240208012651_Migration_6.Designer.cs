@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20240206020147_List_Migration")]
-    partial class ListMigration
+    [Migration("20240208012651_Migration_6")]
+    partial class Migration6
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,8 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Lists");
                 });
 
@@ -73,7 +75,7 @@ namespace Data.Migrations
 
                     b.HasIndex("ListId");
 
-                    b.ToTable("ListItems");
+                    b.ToTable("list_items", (string)null);
                 });
 
             modelBuilder.Entity("Api.Domain.Entities.User.UserEntity", b =>
@@ -111,6 +113,17 @@ namespace Data.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Api.Domain.Entities.List.ListEntity", b =>
+                {
+                    b.HasOne("Api.Domain.Entities.User.UserEntity", "User")
+                        .WithMany("Lists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Api.Domain.Entities.List.ListItemEntity", b =>
                 {
                     b.HasOne("Api.Domain.Entities.List.ListEntity", "List")
@@ -125,6 +138,11 @@ namespace Data.Migrations
             modelBuilder.Entity("Api.Domain.Entities.List.ListEntity", b =>
                 {
                     b.Navigation("ListItems");
+                });
+
+            modelBuilder.Entity("Api.Domain.Entities.User.UserEntity", b =>
+                {
+                    b.Navigation("Lists");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Domain.Helpers;
 
 namespace Api.Domain.Dtos.User
 {
     public class UserUpdateDto
     {
+        // [GuidValidation(ErrorMessage = " Forneça in Id váááálido")]
         [Required(ErrorMessage = "Id do usuário obrigatório")]
         public Guid Id { get; set; }
 

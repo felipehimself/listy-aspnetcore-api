@@ -2,6 +2,7 @@ using Api.CrossCutting.Configs;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Api.CrossCutting.Mapper.User;
+using System.Text.Json.Serialization;
 
 namespace Application;
 
@@ -22,16 +23,14 @@ public class Program
         builder.Services.AddApiDependencyInjection();
         builder.Services.AddApiServices();
 
-        // Default for model state invalid
-        builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
-
         // Default lowercase for endpoints
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
         // Config Automapper
         builder.Services.AddSingleton(ConfigMapper.ConfigApiMapper());
 
-
+        builder.Services.AddControllers().AddJsonOptions(x =>
+       x.JsonSerializerOptions.ReferenceHandler = null);
 
 
         var app = builder.Build();
@@ -47,6 +46,9 @@ public class Program
 
 
         app.MapControllers();
+
+
+
 
         app.Run();
     }

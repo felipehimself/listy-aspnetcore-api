@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.Domain.Dtos.List;
 using Api.Domain.Entities.List;
+using Api.Domain.Exceptions;
 using Api.Domain.Interfaces.Repositories;
 using Api.Domain.Interfaces.Services;
 using AutoMapper;
@@ -13,17 +14,25 @@ namespace Api.Service.Services.List
     public class ListService : IListService
     {
         private readonly IListRepository _listRepository;
-        private readonly IListItemRepository _listItemRepository;
 
         private readonly IMapper _mapper;
 
 
-
-        public ListService(IListRepository listRepository, IListItemRepository listItemRepository, IMapper mapper)
+        public ListService(IListRepository listRepository, IMapper mapper)
         {
             _listRepository = listRepository;
-            _listItemRepository = listItemRepository;
             _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<ListDto>> GetLists()
+
+        {            
+            var listEntities = await _listRepository.GetLists();
+
+            var result = _mapper.Map<IEnumerable<ListDto>>(listEntities);
+
+
+            return result;
         }
 
 
@@ -32,8 +41,8 @@ namespace Api.Service.Services.List
 
             var entity = _mapper.Map<ListEntity>(list);
 
-            var result = await _listRepository.AddList(entity);
-
+            var result = await _listRepository.AddList(entity) ?? throw new ListCreateException("Usuário inválido") ;
+            
             return _mapper.Map<ListCreateResultDto>(result);
 
 
@@ -48,11 +57,7 @@ namespace Api.Service.Services.List
         {
             throw new NotImplementedException();
         }
-
-        public async Task<IEnumerable<ListEntity>> GetLists()
-        {
-            return await _listRepository.GetLists();
-        }
+        
 
         public async Task<ListEntity> UpdateList(ListEntity list)
         {

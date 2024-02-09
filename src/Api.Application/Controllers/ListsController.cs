@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Api.Domain.Dtos.List;
+using Api.Domain.Exceptions;
 using Api.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,9 +36,25 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> CreateList(ListCreateDto list)
         {
 
+            try
+            {
             return Ok(await _service.AddList(list));
+                
+            }
+            catch (ListCreateException e)
+            {
+                Debug.WriteLine(e.Message);
+                return StatusCode((int)HttpStatusCode.NotAcceptable, e.Message);
+
+            } catch (Exception e) {
+                Debug.WriteLine(e.Message);
+
+                throw;
+            }
+
 
         }
+
 
     }
 }

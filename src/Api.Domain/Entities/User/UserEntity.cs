@@ -23,7 +23,7 @@ namespace Api.Domain.Entities.User
         [Required]
         public string Password { get; set; }
 
-        public virtual List<ListEntity> Lists { get; set; }
+        public virtual IEnumerable<ListEntity> Lists { get; set; }
 
     }
 }

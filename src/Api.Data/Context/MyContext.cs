@@ -28,12 +28,12 @@ namespace Api.Data.Context
                 .HasKey(x => x.Id);
 
             modelBuilder.Entity<UserEntity>()
-                .HasMany(x => x.Lists);
+                .HasMany(x => x.Lists)
+                .WithOne(x => x.User)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ListItemEntity>()
                 .HasKey(x => x.Id);
-
-
 
 
             modelBuilder.Entity<ListEntity>()
@@ -52,8 +52,8 @@ namespace Api.Data.Context
             modelBuilder.Entity<ListItemEntity>()
                 .HasKey(x => x.Id);
 
-            modelBuilder.Entity<ListItemEntity>()
-                .HasOne(x => x.List);
+            // modelBuilder.Entity<ListItemEntity>()
+            //     .HasOne(x => x.List);
 
 
 

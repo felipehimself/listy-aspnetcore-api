@@ -10,7 +10,7 @@ namespace Api.Domain.Interfaces.Services
     public interface IListService
     {
         Task<ListCreateResultDto> AddList(ListCreateDto list);
-        Task<IEnumerable<ListEntity>> GetLists();
+        Task<IEnumerable<ListDto>> GetLists();
         Task<ListEntity> GetList(Guid id);
         Task<ListEntity> UpdateList(ListEntity list);
         Task<bool> DeleteList(Guid id);

@@ -16,18 +16,30 @@ namespace Api.CrossCutting.Mapper.List
             CreateMap<ListItemEntity, ListItemCreateDto>()
                      .ReverseMap();
 
+        //    CreateMap<ListEntity, ListCreateDto>()
+        //         .ReverseMap();
+
+
             CreateMap<ListEntity, ListCreateDto>()
-                    .ForMember(dest => dest.ListItems, opt => opt.MapFrom(src => src.ListItems))
+                    // .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                    // .ForMember(dest => dest.ListItems, opt => opt.MapFrom(src => src.ListItems))
                     .ReverseMap();
+            
+            CreateMap<ListEntity, ListDto>()
+                    // .ForMember(dest => dest.ListItems, opt => opt.MapFrom(src => src.ListItems))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
+                    .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+                    .ReverseMap();
+
+            CreateMap<ListItemEntity, ListItemInListDto>()
+                    .ReverseMap();
+                    
 
             CreateMap<ListEntity, ListCreateResultDto>()
                    .ForMember(dest => dest.ListItems, opt => opt.MapFrom(src => src.ListItems))
                    .ReverseMap();
 
 
-            // .ReverseMap();
-
-            // CreateMap<ListEntity, ListCreateResultDto>().ReverseMap();
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Api.Domain.Entities.List
 {
     public class ListItemEntity : BaseEntity
     {
+        
         public string Content { get; set; }
 
         public Guid ListId { get; set; }

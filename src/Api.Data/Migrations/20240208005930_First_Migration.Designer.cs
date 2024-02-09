@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20240206020925_List_Migration_2")]
-    partial class ListMigration2
+    [Migration("20240208005930_First_Migration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,7 +75,7 @@ namespace Data.Migrations
 
                     b.HasIndex("ListId");
 
-                    b.ToTable("ListItems");
+                    b.ToTable("list_items", (string)null);
                 });
 
             modelBuilder.Entity("Api.Domain.Entities.User.UserEntity", b =>

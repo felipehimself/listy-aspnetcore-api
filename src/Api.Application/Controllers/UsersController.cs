@@ -11,6 +11,7 @@ using Api.Domain.Dtos.User;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Net;
 using Api.Domain.Exceptions;
+using System.Diagnostics;
 
 namespace Api.Application.Controllers
 {
@@ -26,32 +27,39 @@ namespace Api.Application.Controllers
             _service = service;
         }
 
-        // TODO
-        // Fazer validações de retorno no bad request, not content etc...
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _service.GetUsers());
+            try
+            {
+                return Ok(await _service.GetUsers());
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var result = await _service.GetUser(id);
+            try
+            {
+                return Ok(await _service.GetUser(id));
+            }
+            catch (Exception e)
+            {
 
-            return Ok(result);
+                Debug.WriteLine(e.Message);
+                throw;
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(UserCreateDto user)
         {
-
-            if (!ModelState.IsValid)
-            {
-
-                return BadRequest(ModelState);
-            }
 
             try
             {
@@ -60,13 +68,14 @@ namespace Api.Application.Controllers
 
             catch (UserCreateException e)
             {
+                Debug.WriteLine(e.Message);
                 return StatusCode((int)HttpStatusCode.NotAcceptable, e.Message);
             }
 
-            catch (ArgumentException e)
+            catch (Exception e)
             {
-
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                Debug.WriteLine(e.Message);
+                throw;
             }
 
         }
@@ -74,11 +83,38 @@ namespace Api.Application.Controllers
         [HttpPut]
         public async Task<IActionResult> Put(UserUpdateDto user)
         {
-
-
-            return Ok(await _service.UpdateUser(user));
+            try
+            {
+                return Ok(await _service.UpdateUser(user));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+
+            try
+            {
+                var isDeleted = await _service.DeleteUser(id);
+
+                if (!isDeleted) return NotFound();
+
+
+                return Ok(true);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+
+
+        }
 
     }
 }
