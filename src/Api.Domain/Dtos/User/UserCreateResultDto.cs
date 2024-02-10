@@ -7,6 +7,7 @@ namespace Api.Domain.Dtos.User
 {
     public class UserCreateResultDto
     {
+        public Guid Id { get; set; }
 
         public required string Name { get; set; }
 
