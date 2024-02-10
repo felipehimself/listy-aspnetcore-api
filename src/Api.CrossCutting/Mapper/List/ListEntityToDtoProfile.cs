@@ -27,8 +27,10 @@ namespace Api.CrossCutting.Mapper.List
 
 
                         CreateMap<ListUpdateDto, ListEntity>();
+                        CreateMap<ListEntity, ListUpdateResultDto>();
 
-                        CreateMap<ListItemEntity, ListItemUpdateDto>().ReverseMap();
+                        CreateMap<ListItemEntity, ListItemUpdateDto>()
+                                .ReverseMap();
 
 
                         // Entity to dto

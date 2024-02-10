@@ -12,7 +12,7 @@ namespace Api.Domain.Interfaces.Services
         Task<ListCreateResultDto> AddList(ListCreateDto list);
         Task<IEnumerable<ListDto>> GetLists();
         Task<ListDto> GetList(Guid id);
-        Task<ListCreateResultDto> UpdateList(ListUpdateDto list);
+        Task<ListUpdateResultDto> UpdateList(ListUpdateDto list);
         Task<bool> DeleteList(Guid id);
     }
 }

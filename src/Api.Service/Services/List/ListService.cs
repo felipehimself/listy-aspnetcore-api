@@ -63,13 +63,13 @@ namespace Api.Service.Services.List
         }
 
 
-        public async Task<ListCreateResultDto> UpdateList(ListUpdateDto list)
+        public async Task<ListUpdateResultDto> UpdateList(ListUpdateDto list)
         {
             var entity = _mapper.Map<ListEntity>(list);
 
             var result = await _listRepository.UpdateList(entity);
 
-            return _mapper.Map<ListCreateResultDto>(result);
+            return _mapper.Map<ListUpdateResultDto>(result);
         }
     }
 }
