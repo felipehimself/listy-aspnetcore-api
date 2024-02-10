@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.CrossCutting.Mapper.Category;
 using Api.CrossCutting.Mapper.List;
 using Api.CrossCutting.Mapper.User;
 using AutoMapper;
@@ -20,6 +21,7 @@ namespace Api.CrossCutting.Configs
                        {
                            config.AddProfile(new UserEntityToDtoProfile());
                            config.AddProfile(new ListEntityToDtoProfile());
+                           config.AddProfile(new CategoryEntityToDtoProfile());
 
                        });
 

@@ -12,7 +12,7 @@ namespace Api.Data.Repositories
     public class ListItemRepository : BaseRepository<ListItemEntity>, IListItemRepository
     {
         public readonly DbSet<ListItemEntity> _dbSet;
-        
+
         public ListItemRepository(MyContext context) : base(context)
         {
             _dbSet = context.Set<ListItemEntity>();

@@ -15,6 +15,7 @@ namespace Api.CrossCutting.Configs
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IListRepository, ListRepository>();
             services.AddScoped<IListItemRepository, ListItemRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             
             return services;
 
