@@ -69,7 +69,9 @@ namespace Api.Application.Controllers
                 return Ok(await _service.AddList(list));
 
             }
-            catch (ListCreateException e)
+            // catch (ListCreateException e)
+            catch (CustomException e)
+
             {
                 Debug.WriteLine(e.Message);
                 return StatusCode((int)HttpStatusCode.NotAcceptable, e.Message);
@@ -114,11 +116,20 @@ namespace Api.Application.Controllers
 
             try
             {
-                var result = await _service.UpdateList(list);
+                await _service.UpdateList(list);
 
-                return Ok(result);
+                return NoContent();
 
             }
+
+            catch (CustomException e)
+
+            {
+                Debug.WriteLine(e.Message);
+                return StatusCode((int)HttpStatusCode.NotAcceptable, e.Message);
+
+            }
+
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);

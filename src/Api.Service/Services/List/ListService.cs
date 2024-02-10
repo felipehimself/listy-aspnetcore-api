@@ -43,7 +43,7 @@ namespace Api.Service.Services.List
 
             var entity = _mapper.Map<ListEntity>(list);
 
-            var result = await _listRepository.AddList(entity) ?? throw new ListCreateException("Usuário inválido");
+            var result = await _listRepository.AddList(entity) ?? throw new CustomException("Usuário inválido");
 
             return _mapper.Map<ListCreateResultDto>(result);
 
@@ -67,7 +67,7 @@ namespace Api.Service.Services.List
         {
             var entity = _mapper.Map<ListEntity>(list);
 
-            var result = await _listRepository.UpdateList(entity);
+            var result = await _listRepository.UpdateList(entity) ?? throw new CustomException("Id da lista inválido");
 
             return _mapper.Map<ListUpdateResultDto>(result);
         }
