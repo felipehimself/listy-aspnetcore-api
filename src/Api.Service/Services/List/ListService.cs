@@ -26,7 +26,7 @@ namespace Api.Service.Services.List
 
         public async Task<IEnumerable<ListDto>> GetLists()
 
-        {            
+        {
             var listEntities = await _listRepository.GetLists();
 
             var result = _mapper.Map<IEnumerable<ListDto>>(listEntities);
@@ -41,8 +41,8 @@ namespace Api.Service.Services.List
 
             var entity = _mapper.Map<ListEntity>(list);
 
-            var result = await _listRepository.AddList(entity) ?? throw new ListCreateException("Usuário inválido") ;
-            
+            var result = await _listRepository.AddList(entity) ?? throw new ListCreateException("Usuário inválido");
+
             return _mapper.Map<ListCreateResultDto>(result);
 
 
@@ -50,14 +50,16 @@ namespace Api.Service.Services.List
 
         public async Task<bool> DeleteList(Guid id)
         {
-            throw new NotImplementedException();
+            return await _listRepository.DeleteAsync(id);
         }
 
-        public async Task<ListEntity> GetList(Guid id)
+        public async Task<ListDto> GetList(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = await _listRepository.GetList(id);
+
+            return _mapper.Map<ListDto>(entity);
         }
-        
+
 
         public async Task<ListEntity> UpdateList(ListEntity list)
         {

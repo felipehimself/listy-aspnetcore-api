@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Data.Context;
+using Api.Domain.Dtos.List;
 using Api.Domain.Entities.List;
 using Api.Domain.Entities.User;
 using Api.Domain.Interfaces.Repositories;
@@ -34,7 +35,7 @@ namespace Api.Data.Repositories
 
             var userExists = await _context.Users.AnyAsync(x => x.Id == list.UserId);
 
-            if(!userExists) return null;
+            if (!userExists) return null;
 
 
             using var transaction = _context.Database.BeginTransaction();
@@ -67,6 +68,11 @@ namespace Api.Data.Repositories
                 transaction.Rollback();
                 throw;
             }
+        }
+
+        public async Task<ListEntity?> GetList(Guid id)
+        {
+            return await _dbSet.Include(x => x.User).Include(x => x.ListItems).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<ListEntity>> GetLists()

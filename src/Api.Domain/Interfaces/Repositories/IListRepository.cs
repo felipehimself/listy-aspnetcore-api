@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Domain.Dtos.List;
 using Api.Domain.Entities.List;
 
 namespace Api.Domain.Interfaces.Repositories
@@ -10,5 +11,7 @@ namespace Api.Domain.Interfaces.Repositories
     {
         Task<ListEntity?> AddList(ListEntity list);
         Task<IEnumerable<ListEntity>> GetLists();
+
+        Task<ListEntity?> GetList(Guid id);
     }
 }

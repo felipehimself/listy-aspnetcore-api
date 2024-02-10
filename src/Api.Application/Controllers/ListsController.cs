@@ -27,10 +27,38 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> GetAll()
         {
 
-            return Ok(await _service.GetLists());
-
+            try
+            {
+                return Ok(await _service.GetLists());
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
 
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetList(Guid id)
+        {
+
+            try
+            {
+                var result = await _service.GetList(id);
+                if (result == null) return NotFound();
+
+                return Ok(await _service.GetList(id));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+
+                throw;
+            }
+
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> CreateList(ListCreateDto list)
@@ -38,17 +66,42 @@ namespace Api.Application.Controllers
 
             try
             {
-            return Ok(await _service.AddList(list));
-                
+                return Ok(await _service.AddList(list));
+
             }
             catch (ListCreateException e)
             {
                 Debug.WriteLine(e.Message);
                 return StatusCode((int)HttpStatusCode.NotAcceptable, e.Message);
 
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Debug.WriteLine(e.Message);
 
+                throw;
+            }
+
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteList(Guid id)
+        {
+
+            try
+            {
+                var result = await _service.DeleteList(id);
+
+                if (!result) return NotFound();
+
+                return Ok(true);
+
+            }
+            catch (Exception e)
+            {
+
+                Debug.WriteLine(e.Message);
                 throw;
             }
 
