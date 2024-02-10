@@ -26,6 +26,11 @@ namespace Api.CrossCutting.Mapper.List
                                  .ReverseMap();
 
 
+                        CreateMap<ListUpdateDto, ListEntity>();
+
+                        CreateMap<ListItemEntity, ListItemUpdateDto>().ReverseMap();
+
+
                         // Entity to dto
                         CreateMap<ListEntity, ListDto>()
                                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))

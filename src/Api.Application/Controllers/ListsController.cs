@@ -108,6 +108,25 @@ namespace Api.Application.Controllers
 
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateList(ListUpdateDto list)
+        {
+
+            try
+            {
+                var result = await _service.UpdateList(list);
+
+                return Ok(result);
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+
+        }
+
 
     }
 }

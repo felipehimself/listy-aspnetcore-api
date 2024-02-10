@@ -28,10 +28,10 @@ namespace Api.Data.Repositories
         public async Task<ListEntity?> AddList(ListEntity list)
         {
 
+
             var isGuidValid = Guid.TryParse(list.UserId.ToString(), out _);
 
             if (!isGuidValid) return null;
-
 
             var userExists = await _context.Users.AnyAsync(x => x.Id == list.UserId);
 
@@ -78,6 +78,57 @@ namespace Api.Data.Repositories
         public async Task<IEnumerable<ListEntity>> GetLists()
         {
             return await _dbSet.Include(x => x.User).Include(x => x.ListItems).ToListAsync();
+        }
+
+        public async Task<ListEntity?> UpdateList(ListEntity list)
+        {
+            try
+            {
+
+                var listFromDb = await _dbSet.Include(x => x.ListItems).FirstOrDefaultAsync(x => x.Id == list.Id);
+
+                if (listFromDb == null) return null;
+
+                var now = DateTime.UtcNow;
+                list.UpdatedAt = now;
+
+                // TODO: refactor
+                _ = Guid.TryParse("8203ae2c-5097-4a4b-9a93-7bcd0377db72".ToString(), out Guid userId);
+
+                list.UserId = userId;
+
+
+                var updateListItems = listFromDb.ListItems.Select(itemFromdb =>
+                {
+                    var findItem = list.ListItems.First(itemInDto => itemInDto.Id == itemFromdb.Id);
+
+                    if (findItem != null)
+                    {
+
+                        itemFromdb.Content = findItem.Content;
+                        itemFromdb.UpdatedAt = now;
+                    }
+
+                    return itemFromdb;
+
+                }).ToList();
+
+
+                list.ListItems = updateListItems;
+
+                _context.Entry(listFromDb).CurrentValues.SetValues(list);
+
+                await _context.SaveChangesAsync();
+
+
+                return list;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

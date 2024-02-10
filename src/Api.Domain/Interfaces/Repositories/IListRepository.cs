@@ -11,7 +11,8 @@ namespace Api.Domain.Interfaces.Repositories
     {
         Task<ListEntity?> AddList(ListEntity list);
         Task<IEnumerable<ListEntity>> GetLists();
-
         Task<ListEntity?> GetList(Guid id);
+
+        Task<ListEntity?> UpdateList(ListEntity list);
     }
 }
