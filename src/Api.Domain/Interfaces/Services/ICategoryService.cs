@@ -11,7 +11,7 @@ namespace Api.Domain.Interfaces.Services
     public interface ICategoryService
     {
 
-        Task<IEnumerable<CategoryEntity>> GetCategories();
+        Task<IEnumerable<CategoryDto>> GetCategories();
         Task<CategoryCreateResultDto> AddCategory(CategoryCreateDto category);
 
 

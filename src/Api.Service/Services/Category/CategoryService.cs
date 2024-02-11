@@ -30,9 +30,13 @@ namespace Api.Service.Services.Category
             return _mapper.Map<CategoryCreateResultDto>(result);
         }
 
-        public async Task<IEnumerable<CategoryEntity>> GetCategories()
+        public async Task<IEnumerable<CategoryDto>> GetCategories()
         {
-            return await _repository.GetAllAsync();
+            var entities = await _repository.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<CategoryDto>>(entities);
+
+
         }
     }
 }
