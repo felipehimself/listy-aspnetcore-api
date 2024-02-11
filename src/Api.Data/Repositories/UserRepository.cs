@@ -39,5 +39,19 @@ namespace Api.Data.Repositories
             return user;
 
         }
+
+
+        public async Task<Guid?> Login(string email, string password)
+        {
+
+            var user = await _dbset.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null) return null;
+
+            return PasswordEncryptor.VerifyPassword(user.Password, password) ? user.Id : null;
+
+
+        }
+
     }
 }

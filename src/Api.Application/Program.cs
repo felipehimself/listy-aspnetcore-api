@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Api.CrossCutting.Mapper.User;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Application;
 
@@ -29,9 +31,25 @@ public class Program
         // Config Automapper
         builder.Services.AddSingleton(ConfigMapper.ConfigApiMapper());
 
-        builder.Services.AddControllers().AddJsonOptions(x =>
-       x.JsonSerializerOptions.ReferenceHandler = null);
+        builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = null);
 
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = "https://localhost:5001",
+                ValidAudience = "listy-api",
+                IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("MySuperSecretKey12345678901234567890tKey@345"))
+            };
+        });
 
         var app = builder.Build();
 
@@ -43,6 +61,7 @@ public class Program
         }
 
         app.UseAuthorization();
+        app.UseAuthentication();
 
 
         app.MapControllers();
