@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using Api.CrossCutting.Middlewares;
 
 namespace Application;
 
@@ -95,6 +96,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseMiddleware<JwtMiddleware>();
         app.UseAuthorization();
         app.UseAuthentication();
 
