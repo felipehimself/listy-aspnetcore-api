@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Domain.Entities.Category;
+using Api.Domain.Entities.Comment;
 using Api.Domain.Entities.List;
 using Api.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace Api.Data.Context
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<ListEntity> Lists { get; set; }
         public DbSet<ListItemEntity> ListItems { get; set; }
+        public DbSet<CommentEntity> Comments { get; set; }
 
         public DbSet<CategoryEntity> Categories { get; set; }
 
@@ -46,21 +48,27 @@ namespace Api.Data.Context
                 .HasMany(x => x.ListItems)
                 .WithOne(x => x.List);
 
+            modelBuilder.Entity<ListEntity>()
+                .HasMany(x => x.Comments)
+                .WithOne(x => x.List);
+
+
             modelBuilder.Entity<ListItemEntity>()
                 .HasKey(x => x.Id);
-
 
             modelBuilder.Entity<ListItemEntity>()
                 .ToTable("list_items");
 
-            // modelBuilder.Entity<ListItemEntity>()
-            //     .HasKey(x => x.Id);
-
-            // modelBuilder.Entity<ListItemEntity>()
-            //     .HasOne(x => x.List);
-
             modelBuilder.Entity<CategoryEntity>()
                 .HasKey(x => x.Id);
+
+            modelBuilder.Entity<CommentEntity>()
+                .HasKey(x => x.Id);
+
+            modelBuilder.Entity<CommentEntity>()
+                .HasOne(x => x.List);
+               
+
 
 
 

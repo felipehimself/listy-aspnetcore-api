@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Domain.Entities.Category;
+using Api.Domain.Entities.Comment;
 using Api.Domain.Entities.User;
 
 namespace Api.Domain.Entities.List
@@ -14,6 +16,8 @@ namespace Api.Domain.Entities.List
         public Guid UserId { get; set; }
         public virtual UserEntity User { get; set; }
         public virtual IEnumerable<ListItemEntity> ListItems { get; set; }
+
+        public virtual IEnumerable<CommentEntity> Comments { get; set; }
 
 
     }

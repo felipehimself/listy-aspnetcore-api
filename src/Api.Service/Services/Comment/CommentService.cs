@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Api.Domain.Dtos.Comment;
+using Api.Domain.Entities.Comment;
+using Api.Domain.Interfaces.Repositories;
+using Api.Domain.Interfaces.Services;
+using AutoMapper;
+
+namespace Api.Service.Services.Comment
+{
+    public class CommentService : ICommentService
+    {
+
+        private readonly ICommentRepository _repository;
+        private readonly IMapper _mapper;
+
+
+        public CommentService(ICommentRepository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
+
+
+        public async Task<CommentCreateResultDto> AddComment(CommentCreateDto comment)
+        {
+ 
+
+            var entity = _mapper.Map<CommentEntity>(comment);
+            
+            var result = await _repository.AddAsync(entity);
+
+            return _mapper.Map<CommentCreateResultDto>(result);
+
+
+        }
+    }
+}
