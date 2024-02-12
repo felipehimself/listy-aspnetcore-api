@@ -39,8 +39,6 @@ namespace Api.Service.Services.List
         public async Task<ListCreateResultDto> AddList(ListCreateDto list)
         {
 
-            // TODO: ler o userid do token da requisição, nao do dto
-
             var entity = _mapper.Map<ListEntity>(list);
 
             var result = await _listRepository.AddList(entity) ?? throw new CustomException("Usuário inválido");

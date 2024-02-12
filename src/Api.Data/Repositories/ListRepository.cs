@@ -92,11 +92,6 @@ namespace Api.Data.Repositories
                 var now = DateTime.UtcNow;
                 list.UpdatedAt = now;
 
-                // TODO: refactor
-                _ = Guid.TryParse("8203ae2c-5097-4a4b-9a93-7bcd0377db72".ToString(), out Guid userId);
-
-                list.UserId = userId;
-
 
                 var updateListItems = listFromDb.ListItems.Select(itemFromdb =>
                 {

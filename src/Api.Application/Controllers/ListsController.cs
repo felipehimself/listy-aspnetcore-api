@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Api.Domain.Dtos.List;
 using Api.Domain.Exceptions;
 using Api.Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Application.Controllers
@@ -59,10 +60,20 @@ namespace Api.Application.Controllers
 
         }
 
-
+        [Authorize("Bearer")]
         [HttpPost]
         public async Task<IActionResult> CreateList(ListCreateDto list)
         {
+
+            var userId = HttpContext.Items["UserId"];
+
+            if (userId == null) return BadRequest("User not found");
+
+            Guid id = Guid.Empty;
+
+            _ = Guid.TryParse(userId.ToString(), out id);
+
+            list.UserId = id;
 
             try
             {
@@ -110,9 +121,20 @@ namespace Api.Application.Controllers
 
         }
 
+        [Authorize("Bearer")]
         [HttpPut]
         public async Task<IActionResult> UpdateList(ListUpdateDto list)
         {
+
+            var userId = HttpContext.Items["UserId"];
+
+            if (userId == null) return BadRequest("User not found");
+
+            Guid id = Guid.Empty;
+
+            _ = Guid.TryParse(userId.ToString(), out id);
+
+            list.UserId = id;
 
             try
             {

@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Api.Domain.Dtos.List
 {
     public class ListCreateDto
     {
-        [Required(ErrorMessage = "Necessário informar o id do Usuário")]
+        [JsonIgnore]
         public Guid UserId { get; set; }
 
         [Required(ErrorMessage = "Necessário informar o título da Lista")]

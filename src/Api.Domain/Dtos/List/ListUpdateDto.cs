@@ -2,12 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Api.Domain.Dtos.List
 {
     public class ListUpdateDto
     {
+
+        [JsonIgnore]
+        public Guid UserId { get; set; }
+
         [Required(ErrorMessage = "Necessário informar o id da Lista")]
         public Guid Id { get; set; }
 
