@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Api.CrossCutting.Helpers;
 using Api.Domain.Dtos.List;
 using Api.Domain.Exceptions;
 using Api.Domain.Interfaces.Services;
@@ -40,6 +41,7 @@ namespace Api.Application.Controllers
 
         }
 
+        [Authorize("Bearer")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetList(Guid id)
         {
@@ -64,16 +66,12 @@ namespace Api.Application.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateList(ListCreateDto list)
         {
+            var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            var userId = HttpContext.Items["UserId"];
+            if (userId == null) return Unauthorized();
 
-            if (userId == null) return BadRequest("User not found");
 
-            Guid id = Guid.Empty;
-
-            _ = Guid.TryParse(userId.ToString(), out id);
-
-            list.UserId = id;
+            list.UserId = userId!.Value;
 
             try
             {
@@ -98,19 +96,34 @@ namespace Api.Application.Controllers
 
         }
 
+        [Authorize("Bearer")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteList(Guid id)
         {
 
+
+            var userId = new GetUserFromRequest(HttpContext).GetUserId();
+
+            if (userId == null) return Unauthorized();
+
+
             try
             {
-                var result = await _service.DeleteList(id);
+                var result = await _service.DeleteList(id, userId!.Value);
 
                 if (!result) return NotFound();
 
                 return Ok(true);
 
             }
+
+            catch (CustomException e)
+            {
+                Debug.WriteLine(e.Message);
+                return StatusCode((int)HttpStatusCode.Unauthorized, e.Message);
+            }
+
+
             catch (Exception e)
             {
 
@@ -126,15 +139,12 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> UpdateList(ListUpdateDto list)
         {
 
-            var userId = HttpContext.Items["UserId"];
 
-            if (userId == null) return BadRequest("User not found");
+            var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            Guid id = Guid.Empty;
+            if (userId == null) return Unauthorized();
 
-            _ = Guid.TryParse(userId.ToString(), out id);
-
-            list.UserId = id;
+            list.UserId = userId!.Value;
 
             try
             {

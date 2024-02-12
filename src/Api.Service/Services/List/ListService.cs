@@ -48,8 +48,16 @@ namespace Api.Service.Services.List
 
         }
 
-        public async Task<bool> DeleteList(Guid id)
+        public async Task<bool> DeleteList(Guid id, Guid userId)
         {
+            var list = await _listRepository.GetList(id);
+
+            if (list == null) return false;
+
+            if (list.User.Id != userId) throw new UnauthorizedAccessException();
+
+            var userFromDb = list.User.Id;
+
             return await _listRepository.DeleteAsync(id);
         }
 
@@ -59,7 +67,6 @@ namespace Api.Service.Services.List
 
             return _mapper.Map<ListSingleDto>(entity);
 
-            // return entity;
         }
 
 

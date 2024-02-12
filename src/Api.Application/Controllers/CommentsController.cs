@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.CrossCutting.Helpers;
 using Api.Domain.Dtos.Comment;
 using Api.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -21,26 +23,27 @@ namespace Api.Application.Controllers
             _service = service;
         }
 
-        // [Authorize("Bearer")]
+        [Authorize("Bearer")]
         [HttpPost]
         public async Task<IActionResult> PostComment(CommentCreateDto comment)
         {
-            var comm = comment;
-            // var userId = HttpContext.Items["UserId"];
 
-            // if (userId == null) return BadRequest("User not found");
+            var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            // Guid id = Guid.Empty;
+            if (userId == null) return Unauthorized();
 
-            // _ = Guid.TryParse(userId.ToString(), out id);
+            try
+            {
+                comment.UserId = userId!.Value;
 
-            // comment.UserId = id;
+                return Ok(await _service.AddComment(comment));
+            }
+            catch (Exception e)
+            {
 
-            // 8203ae2c-5097-4a4b-9a93-7bcd0377db72
-
-            comment.UserId = Guid.Parse("8203ae2c-5097-4a4b-9a93-7bcd0377db72");
-
-            return Ok(await _service.AddComment(comment));
+                Debug.WriteLine(e.Message);
+                throw;
+            }
         }
     }
 }
