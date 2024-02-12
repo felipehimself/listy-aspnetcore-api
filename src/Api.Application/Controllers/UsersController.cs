@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Net;
 using Api.Domain.Exceptions;
 using System.Diagnostics;
+using Api.CrossCutting.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Application.Controllers
 {
@@ -80,9 +82,16 @@ namespace Api.Application.Controllers
 
         }
 
+        [Authorize("Bearer")]
         [HttpPut]
         public async Task<IActionResult> Put(UserUpdateDto user)
         {
+            var userId = new GetUserFromRequest(HttpContext).GetUserId();
+
+            if (userId == null) return Unauthorized();
+
+            user.Id = userId.Value;
+
             try
             {
                 return Ok(await _service.UpdateUser(user));

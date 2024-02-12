@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Api.Domain.Helpers;
 
@@ -10,7 +11,7 @@ namespace Api.Domain.Dtos.User
     public class UserUpdateDto
     {
         // [GuidValidation(ErrorMessage = " Forneça in Id váááálido")]
-        [Required(ErrorMessage = "Id do usuário obrigatório")]
+        [JsonIgnore]
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Nome é obrigatório")]
@@ -26,9 +27,9 @@ namespace Api.Domain.Dtos.User
         public required string Email { get; set; }
 
 
-        [Required(ErrorMessage = "Senha obrigatória")]
-        [StringLength(12, MinimumLength = 6, ErrorMessage = "Mínimo de {2} e máximo de {1} caracteres")]
-        public required string Password { get; set; }
+        // [Required(ErrorMessage = "Senha obrigatória")]
+        // [StringLength(12, MinimumLength = 6, ErrorMessage = "Mínimo de {2} e máximo de {1} caracteres")]
+        // public required string Password { get; set; }
 
 
     }

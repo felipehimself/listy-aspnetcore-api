@@ -58,7 +58,7 @@ namespace Api.Service.Services.User
 
             var entity = _mapper.Map<UserEntity>(user);
 
-            var result = await _repository.UpdateAsync(entity);
+            var result = await _repository.UpdateUserAsync(entity) ?? throw new Exception("Username ou email já em uso");
 
             return _mapper.Map<UserUpdateResultDto>(result);
 
