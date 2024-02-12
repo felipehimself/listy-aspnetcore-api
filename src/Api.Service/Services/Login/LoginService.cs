@@ -24,7 +24,7 @@ namespace Api.Service.Services.Login
         public async Task<string?> Login(LoginDto user)
         {
 
-            var userfromDb = await _repository.Login(user.Email, user.Password) ?? throw new CustomException("Usurário ou e-mail inválido");
+            var userfromDb = await _repository.Login(user.Email, user.Password) ?? throw new CustomException("E-mail ou senha inválidos");
 
 
 
