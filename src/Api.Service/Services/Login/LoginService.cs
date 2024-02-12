@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Domain.Dtos.Login;
-using Api.Domain.Enums;
 using Api.Domain.Exceptions;
 using Api.Domain.Interfaces.Repositories;
 using Api.Domain.Interfaces.Services;
