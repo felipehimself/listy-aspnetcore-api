@@ -54,11 +54,29 @@ namespace Api.Application.Controllers
                 throw;
             }
 
-
-
         }
 
-        
+
+        [Authorize("Bearer", Roles = "admin")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                var result = await _service.DeleteCategory(id);
+
+                if (!result) return NotFound();
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+
 
     }
 }

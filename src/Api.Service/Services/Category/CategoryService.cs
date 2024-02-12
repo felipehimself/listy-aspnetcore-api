@@ -30,6 +30,11 @@ namespace Api.Service.Services.Category
             return _mapper.Map<CategoryCreateResultDto>(result);
         }
 
+        public async Task<bool> DeleteCategory(Guid id)
+        {
+            return await _repository.DeleteAsync(id);
+        }
+
         public async Task<IEnumerable<CategoryDto>> GetCategories()
         {
             var entities = await _repository.GetAllAsync();
