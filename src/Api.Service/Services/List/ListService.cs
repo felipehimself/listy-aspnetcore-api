@@ -53,11 +53,13 @@ namespace Api.Service.Services.List
             return await _listRepository.DeleteAsync(id);
         }
 
-        public async Task<ListDto> GetList(Guid id)
+        public async Task<ListSingleDto> GetList(Guid id)
         {
             var entity = await _listRepository.GetList(id);
 
-            return _mapper.Map<ListDto>(entity);
+            return _mapper.Map<ListSingleDto>(entity);
+
+            // return entity;
         }
 
 

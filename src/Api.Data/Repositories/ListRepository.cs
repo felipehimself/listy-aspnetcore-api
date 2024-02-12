@@ -72,7 +72,11 @@ namespace Api.Data.Repositories
 
         public async Task<ListEntity?> GetList(Guid id)
         {
-            return await _dbSet.Include(x => x.User).Include(x => x.ListItems).FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbSet.Include(x => x.User)
+                .Include(x => x.ListItems)
+                .Include(x => x.Comments)
+                .ThenInclude(y => y.User)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<ListEntity>> GetLists()

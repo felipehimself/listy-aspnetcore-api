@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Domain.Dtos.Comment;
 using Api.Domain.Dtos.List;
+using Api.Domain.Entities.Comment;
 using Api.Domain.Entities.List;
 using AutoMapper;
 
@@ -37,6 +39,24 @@ namespace Api.CrossCutting.Mapper.List
                         CreateMap<ListEntity, ListDto>()
                                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
                                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username));
+
+
+                        // Entity to dto
+                        CreateMap<ListEntity, ListSingleDto>()
+                                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
+                                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+                                .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments.Select(x => new CommentListDto
+                                {
+                                        Id = x.Id,
+                                        Username = x.User.Username,
+                                        Comment = x.Comment,
+                                        CreatedAt = x.CreatedAt!.Value,
+                                })));
+
+                        CreateMap<ListItemEntity, ListItemInListDto>()
+                                .ReverseMap();
+
+                        CreateMap<CommentEntity, CommentListDto>().ReverseMap();
 
                         // Required for mapping from ListEntity to ListDto
                         CreateMap<ListItemEntity, ListItemInListDto>()

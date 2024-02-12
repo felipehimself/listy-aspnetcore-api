@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Domain.Dtos.Comment;
-using Api.Domain.Dtos.User;
 
 namespace Api.Domain.Dtos.List
 {
-    public class ListDto
+    public class ListSingleDto
     {
         public Guid Id { get; set; }
 
@@ -20,9 +19,7 @@ namespace Api.Domain.Dtos.List
 
         public virtual IEnumerable<ListItemInListDto> ListItems { get; set; }
 
-        // public virtual IEnumerable<CommentListDto> Comments { get; set; }
-
-
+        public virtual IEnumerable<CommentListDto> Comments { get; set; }
 
     }
 }

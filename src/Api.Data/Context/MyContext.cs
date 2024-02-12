@@ -44,6 +44,7 @@ namespace Api.Data.Context
                 .HasOne(x => x.User)
                 .WithMany(x => x.Lists);
 
+
             modelBuilder.Entity<ListEntity>()
                 .HasMany(x => x.ListItems)
                 .WithOne(x => x.List);
@@ -66,12 +67,11 @@ namespace Api.Data.Context
                 .HasKey(x => x.Id);
 
             modelBuilder.Entity<CommentEntity>()
-                .HasOne(x => x.List);
-               
+                .HasOne(x => x.List)
+                .WithMany(x => x.Comments);
 
-
-
-
+            modelBuilder.Entity<CommentEntity>()
+                .HasOne(x => x.User);
 
         }
 
