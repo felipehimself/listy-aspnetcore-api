@@ -6,6 +6,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Api.Domain.Dtos.Token;
+using Api.Domain.Entities.User;
 using Api.Domain.Interfaces.Services;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,7 +16,7 @@ namespace Api.Service.Services.Authentication
     public class AuthenticationService : IAuthenticationService
     {
 
-        public string GenerateJwtToken(Guid userId)
+        public string GenerateJwtToken(Guid userId, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("MySuperSecretKey12345678901234567890tKey@345");
@@ -24,7 +26,9 @@ namespace Api.Service.Services.Authentication
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Role, role.ToString()),
+
                 }),
                 Expires = DateTime.UtcNow.AddDays(7), // Token expires in 7 days
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
@@ -37,10 +41,10 @@ namespace Api.Service.Services.Authentication
         }
 
 
-        public static Guid? ValidateAndDecodeToken(string token)
+        public static TokenDto? ValidateAndDecodeToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-           
+
 
             try
             {
@@ -60,13 +64,24 @@ namespace Api.Service.Services.Authentication
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
 
+                // foreach (var claim in jwtToken.Claims) {
+                //     Console.WriteLine(claim.Type + " " + claim.Value);
+                // } 
+
 
 
                 var userId = Guid.Parse(jwtToken.Claims.ToList().First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
-                return userId;
+
+                var userRole = jwtToken.Claims.ToList().First(x => x.Type == "role").Value;
+
+
+
+
+                return new TokenDto { UserId = userId, Role = userRole! };
             }
             catch (Exception)
             {
+                // TODO: tratar este erro..., ver onde ele é retornado...
                 // Token validation failed
                 return null;
             }

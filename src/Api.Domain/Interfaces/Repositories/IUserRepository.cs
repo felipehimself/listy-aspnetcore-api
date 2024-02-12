@@ -10,6 +10,6 @@ namespace Api.Domain.Interfaces.Repositories
     public interface IUserRepository : IGenericRepository<UserEntity>
     {
         Task<UserEntity?> CreateNewUserAsync(UserEntity user);
-        Task<Guid?> Login(string email, string password);
+        Task<UserEntity?> Login(string email, string password);
     }
 }

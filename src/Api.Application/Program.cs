@@ -102,8 +102,8 @@ public class Program
         }
 
         app.UseMiddleware<JwtMiddleware>();
-        app.UseAuthorization();
         app.UseAuthentication();
+        app.UseAuthorization();
 
 
         app.MapControllers();

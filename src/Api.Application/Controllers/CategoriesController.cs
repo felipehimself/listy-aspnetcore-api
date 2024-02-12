@@ -38,7 +38,7 @@ namespace Api.Application.Controllers
             }
         }
 
-        [Authorize("Bearer")]
+        [Authorize("Bearer", Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> Post(CategoryCreateDto category)
         {
@@ -57,6 +57,8 @@ namespace Api.Application.Controllers
 
 
         }
+
+        
 
     }
 }

@@ -41,14 +41,14 @@ namespace Api.Data.Repositories
         }
 
 
-        public async Task<Guid?> Login(string email, string password)
+        public async Task<UserEntity?> Login(string email, string password)
         {
 
             var user = await _dbset.FirstOrDefaultAsync(x => x.Email == email);
 
             if (user == null) return null;
 
-            return PasswordEncryptor.VerifyPassword(user.Password, password) ? user.Id : null;
+            return PasswordEncryptor.VerifyPassword(user.Password, password) ? new UserEntity { Id = user.Id, Role = user.Role } : null;
 
 
         }

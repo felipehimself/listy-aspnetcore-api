@@ -32,6 +32,10 @@ namespace Api.Data.Context
                 .HasKey(x => x.Id);
 
             modelBuilder.Entity<UserEntity>()
+                .Property(x => x.Role)
+                .HasDefaultValue("user");
+
+            modelBuilder.Entity<UserEntity>()
                 .HasMany(x => x.Lists)
                 .WithOne(x => x.User)
                 .OnDelete(DeleteBehavior.Cascade);
