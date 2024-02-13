@@ -24,27 +24,30 @@ namespace Api.Data.Repositories
             return await _dbset.AnyAsync(x => (x.Email == email) || x.Username == username);
         }
 
-        public async Task<UserEntity?> CreateNewUserAsync(UserEntity user)
+        public async Task<Tuple<UserEntity?, string>> CreateNewUserAsync(UserEntity user)
         {
             // var exists = await _dbset.AnyAsync(x => (x.Email == user.Email) || x.Username == user.Username);
             var exists = await ExistsEmailOrUserName(user.Email, user.Username);
 
-            if (exists) return null;
+            if (exists) return new Tuple<UserEntity?, string>(null, "Email já em uso");
+
+
 
             // TODO:
             // Nao precisa verificar, guid sempre será novo, é um novo cara...
-            if (user.Id == Guid.Empty)
-            {
-                user.Id = Guid.NewGuid();
-            }
-
+            // if (user.Id == Guid.Empty)
+            // {
+            //     user.Id = Guid.NewGuid();
+            // }
+            user.Id = Guid.NewGuid();
             user.CreatedAt = DateTime.UtcNow;
             user.Password = PasswordEncryptor.Encrypt(user.Password);
 
             _dbset.Add(user);
             await _context.SaveChangesAsync();
 
-            return user;
+            // return user;
+            return new Tuple<UserEntity?, string>(user, "");
 
         }
 

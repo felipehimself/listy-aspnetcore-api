@@ -48,9 +48,13 @@ namespace Api.Service.Services.User
         {
             var entity = _mapper.Map<UserEntity>(user);
 
-            var userCreated = await _repository.CreateNewUserAsync(entity) ?? throw new UserCreateException("Username ou email inválido");
+            Tuple<UserEntity?, string> result = await _repository.CreateNewUserAsync(entity) ;
 
-            return _mapper.Map<UserCreateResultDto>(userCreated);
+            if (result.Item1 == null) throw new CustomException(result.Item2, HttpStatusCode.NotAcceptable);
+            
+            // ?? throw new UserCreateException("Username ou email inválido");
+
+            return _mapper.Map<UserCreateResultDto>(result.Item1);
 
         }
 
@@ -59,7 +63,7 @@ namespace Api.Service.Services.User
 
             var entity = _mapper.Map<UserEntity>(user);
 
-            var result = await _repository.UpdateUserAsync(entity);
+            Tuple<UserEntity?, string> result = await _repository.UpdateUserAsync(entity);
 
             if (result.Item1 == null) throw new CustomException(result.Item2, HttpStatusCode.NotAcceptable);
 
