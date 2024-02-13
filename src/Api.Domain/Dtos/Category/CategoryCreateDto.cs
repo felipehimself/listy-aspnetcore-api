@@ -8,9 +8,8 @@ namespace Api.Domain.Dtos.Category
 {
     public class CategoryCreateDto
     {
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(15, MinimumLength = 1, ErrorMessage = "Categoria deve ter mínimo de {2} máximo de {1} caracteres.")]
-        [RegularExpression(@"^\S.{0,9}\S$", ErrorMessage = "Campos em branco não são permitidos")]
         public string Category { get; set; }
     }
 }
