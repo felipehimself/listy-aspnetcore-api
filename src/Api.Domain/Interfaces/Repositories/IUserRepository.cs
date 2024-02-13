@@ -11,9 +11,9 @@ namespace Api.Domain.Interfaces.Repositories
     {
         Task<UserEntity?> CreateNewUserAsync(UserEntity user);
         Task<UserEntity?> Login(string email, string password);
-        Task<UserEntity?> UpdateUserAsync(UserEntity user);
+        Task<Tuple<UserEntity?, string>> UpdateUserAsync(UserEntity user);
 
         Task<bool> ExistsEmailOrUserName(string email, string username);
-        
+
     }
 }

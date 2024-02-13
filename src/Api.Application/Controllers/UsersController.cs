@@ -96,6 +96,14 @@ namespace Api.Application.Controllers
             {
                 return Ok(await _service.UpdateUser(user));
             }
+
+            catch (CustomException e)
+            {
+                Debug.WriteLine(e.Message);
+                return StatusCode((int)e.StatusCode, e.Message);
+
+            }
+
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);

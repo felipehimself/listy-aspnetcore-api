@@ -59,11 +59,11 @@ namespace Api.Service.Services.User
 
             var entity = _mapper.Map<UserEntity>(user);
 
-            // Todo
-            // Mensagem virá do result
-            var result = await _repository.UpdateUserAsync(entity) ?? throw new CustomException("Username ou email já em uso", HttpStatusCode.NotAcceptable);
+            var result = await _repository.UpdateUserAsync(entity);
 
-            return _mapper.Map<UserUpdateResultDto>(result);
+            if (result.Item1 == null) throw new CustomException(result.Item2, HttpStatusCode.NotAcceptable);
+
+            return _mapper.Map<UserUpdateResultDto>(result.Item1);
 
 
         }

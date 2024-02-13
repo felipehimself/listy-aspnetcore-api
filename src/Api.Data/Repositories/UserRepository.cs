@@ -61,22 +61,20 @@ namespace Api.Data.Repositories
 
         }
 
-        public async Task<UserEntity?> UpdateUserAsync(UserEntity user)
+        public async Task<Tuple<UserEntity?, string>> UpdateUserAsync(UserEntity user)
         {
 
             var emailInUse = await _dbset.FirstOrDefaultAsync(x => x.Email == user.Email);
 
-            if (emailInUse != null && emailInUse.Id != user.Id) return null;
+            if (emailInUse != null && emailInUse.Id != user.Id) return new Tuple<UserEntity?, string>(null, "E-mail já em uso");
 
 
             var userNameInUse = await _dbset.FirstOrDefaultAsync(x => x.Username == user.Username);
 
-            if (userNameInUse != null && userNameInUse.Id != user.Id) return null;
+            if (userNameInUse != null && userNameInUse.Id != user.Id) return new Tuple<UserEntity?, string>(null, "Username já em uso");
 
 
             var userFromDb = await GetByIdAsync(user.Id);
-
-            if (userFromDb != null && userFromDb.Id != user.Id) return null;
 
             if (userFromDb != null)
             {
@@ -84,18 +82,18 @@ namespace Api.Data.Repositories
                 user.Id = userFromDb.Id;
                 user.CreatedAt = userFromDb.CreatedAt;
                 user.Password = userFromDb.Password;
-                user.UpdatedAt = DateTime.UtcNow;
                 user.Role = userFromDb.Role;
+                user.UpdatedAt = DateTime.UtcNow;
 
                 _context.Entry(userFromDb).CurrentValues.SetValues(user);
 
                 await _context.SaveChangesAsync();
 
-                return user;
+                return new Tuple<UserEntity?, string>(user, "");
 
             }
 
-            return null;
+            return new Tuple<UserEntity?, string>(null, "Algo deu errado");
 
 
         }
