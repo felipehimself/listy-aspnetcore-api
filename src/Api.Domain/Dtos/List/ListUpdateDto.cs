@@ -22,7 +22,7 @@ namespace Api.Domain.Dtos.List
 
 
         [Required]
-        [StringLength(10, MinimumLength = 3, ErrorMessage = "Mínimo de {2} de máximo de {1} caracteres")]
+         [StringLength(15, MinimumLength = 1, ErrorMessage = "Categoria deve ter mínimo de {2} máximo de {1} caracteres.")]
         public string Category { get; set; }
 
         [Required]

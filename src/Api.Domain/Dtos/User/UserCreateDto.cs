@@ -13,8 +13,8 @@ namespace Api.Domain.Dtos.User
         public required string Name { get; set; }
 
         [Required(ErrorMessage = "Username é obrigatório")]
+        [RegularExpression(@"^\S.{0,9}\S$", ErrorMessage = "Campos em branco não são permitidos")]
         [StringLength(12, MinimumLength = 1, ErrorMessage = "Username tem que ter pelo menos {2} e máximo de {1} caracteres")]
-
         public required string Username { get; set; }
 
         [Required(ErrorMessage = "Email é obrigatório")]
