@@ -88,9 +88,7 @@ namespace Api.Application.Controllers
         {
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            if (userId == null) return Unauthorized();
-
-            user.Id = userId.Value;
+            user.Id = userId;
 
             try
             {
@@ -111,9 +109,13 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var userIdOnRequest = new GetUserFromRequest(HttpContext).GetUserId();
+
+            if (userIdOnRequest != id) return Unauthorized();
 
             try
             {

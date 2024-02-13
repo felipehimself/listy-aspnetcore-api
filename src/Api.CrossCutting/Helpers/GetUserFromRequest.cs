@@ -15,19 +15,19 @@ namespace Api.CrossCutting.Helpers
             _context = context;
         }
 
-        public Guid? GetUserId()
+        public Guid GetUserId()
         {
 
-            var userId = _context.Items["UserId"];
+            var userId = _context.Items["UserId"]!;
 
-            if (userId == null) return null;
+            // if (userId == null) return null;
 
 
-            var parserd = Guid.TryParse(userId.ToString(), out Guid id);
+            // var parserd = Guid.TryParse(userId!.ToString(), out Guid id);
 
-            if (!parserd) return null;
+            // if (!parserd) return null;
 
-            return id;
+            return Guid.Parse(userId.ToString()!);
 
 
 

@@ -68,10 +68,10 @@ namespace Api.Application.Controllers
         {
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            if (userId == null) return Unauthorized();
+            // if (userId == null) return Unauthorized();
 
 
-            list.UserId = userId!.Value;
+            list.UserId = userId;
 
             try
             {
@@ -104,12 +104,12 @@ namespace Api.Application.Controllers
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            if (userId == null) return Unauthorized();
+            // if (userId == null) return Unauthorized();
 
 
             try
             {
-                var result = await _service.DeleteList(id, userId!.Value);
+                var result = await _service.DeleteList(id, userId);
 
                 if (!result) return NotFound();
 
@@ -142,9 +142,9 @@ namespace Api.Application.Controllers
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            if (userId == null) return Unauthorized();
+            // if (userId == null) return Unauthorized();
 
-            list.UserId = userId!.Value;
+            list.UserId = userId;
 
             try
             {

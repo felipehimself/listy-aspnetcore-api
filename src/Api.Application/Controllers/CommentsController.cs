@@ -30,11 +30,11 @@ namespace Api.Application.Controllers
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            if (userId == null) return Unauthorized();
+            // if (userId == null) return Unauthorized();
 
             try
             {
-                comment.UserId = userId!.Value;
+                comment.UserId = userId;
 
                 return Ok(await _service.AddComment(comment));
             }
