@@ -28,14 +28,15 @@ namespace Api.Data.Repositories
         public async Task<ListEntity?> AddList(ListEntity list)
         {
 
+            // todo:
+            // ver se é encessário pois será que o jwt ja nao pode validar?
+            // var isGuidValid = Guid.TryParse(list.UserId.ToString(), out _);
 
-            var isGuidValid = Guid.TryParse(list.UserId.ToString(), out _);
+            // if (!isGuidValid) return null;
 
-            if (!isGuidValid) return null;
+            // var userExists = await _context.Users.AnyAsync(x => x.Id == list.UserId);
 
-            var userExists = await _context.Users.AnyAsync(x => x.Id == list.UserId);
-
-            if (!userExists) return null;
+            // if (!userExists) return null;
 
 
             using var transaction = _context.Database.BeginTransaction();
