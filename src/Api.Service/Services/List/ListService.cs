@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Api.Domain.Dtos.List;
 using Api.Domain.Entities.List;
@@ -41,7 +42,7 @@ namespace Api.Service.Services.List
 
             var entity = _mapper.Map<ListEntity>(list);
 
-            var result = await _listRepository.AddList(entity) ?? throw new CustomException("Usuário inválido");
+            var result = await _listRepository.AddList(entity) ?? throw new CustomException("Usuário inválido", HttpStatusCode.NotAcceptable);
 
             return _mapper.Map<ListCreateResultDto>(result);
 
@@ -74,7 +75,7 @@ namespace Api.Service.Services.List
         {
             var entity = _mapper.Map<ListEntity>(list);
 
-            var result = await _listRepository.UpdateList(entity) ?? throw new CustomException("Id da lista inválido");
+            var result = await _listRepository.UpdateList(entity) ?? throw new CustomException("Id da lista inválido", HttpStatusCode.NotFound);
 
             return _mapper.Map<ListUpdateResultDto>(result);
         }

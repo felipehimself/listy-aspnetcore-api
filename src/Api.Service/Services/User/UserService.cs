@@ -1,3 +1,4 @@
+using System.Net;
 using Api.Domain.Dtos.User;
 using Api.Domain.Entities.User;
 using Api.Domain.Exceptions;
@@ -58,7 +59,9 @@ namespace Api.Service.Services.User
 
             var entity = _mapper.Map<UserEntity>(user);
 
-            var result = await _repository.UpdateUserAsync(entity) ?? throw new Exception("Username ou email já em uso");
+            // Todo
+            // Mensagem virá do result
+            var result = await _repository.UpdateUserAsync(entity) ?? throw new CustomException("Username ou email já em uso", HttpStatusCode.NotAcceptable);
 
             return _mapper.Map<UserUpdateResultDto>(result);
 

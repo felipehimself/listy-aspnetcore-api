@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Api.Domain.Dtos.Login;
 using Api.Domain.Exceptions;
@@ -24,11 +25,10 @@ namespace Api.Service.Services.Login
         public async Task<string?> Login(LoginDto user)
         {
 
-            var userfromDb = await _repository.Login(user.Email, user.Password) ?? throw new CustomException("E-mail ou senha inválidos");
+            var userfromDb = await _repository.Login(user.Email, user.Password) ?? throw new CustomException("E-mail ou senha inválidos", HttpStatusCode.Unauthorized);
 
 
-
-            var token = _authenticationService.GenerateJwtToken(userfromDb.Id, userfromDb.Role );
+            var token = _authenticationService.GenerateJwtToken(userfromDb.Id, userfromDb.Role);
 
             return token;
 

@@ -40,7 +40,7 @@ namespace Api.Application.Controllers
             {
 
                 Debug.WriteLine(e.Message);
-                return StatusCode((int)HttpStatusCode.Unauthorized, e.Message);
+                return StatusCode((int)e.StatusCode, e.Message);
 
 
             }

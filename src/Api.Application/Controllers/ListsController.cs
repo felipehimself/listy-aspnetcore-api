@@ -83,7 +83,7 @@ namespace Api.Application.Controllers
 
             {
                 Debug.WriteLine(e.Message);
-                return StatusCode((int)HttpStatusCode.NotAcceptable, e.Message);
+                return StatusCode((int)e.StatusCode, e.Message);
 
             }
             catch (Exception e)
@@ -120,7 +120,7 @@ namespace Api.Application.Controllers
             catch (CustomException e)
             {
                 Debug.WriteLine(e.Message);
-                return StatusCode((int)HttpStatusCode.Unauthorized, e.Message);
+                return StatusCode((int)e.StatusCode, e.Message);
             }
 
 
@@ -158,7 +158,7 @@ namespace Api.Application.Controllers
 
             {
                 Debug.WriteLine(e.Message);
-                return StatusCode((int)HttpStatusCode.NotAcceptable, e.Message);
+                return StatusCode((int)e.StatusCode, e.Message);
 
             }
 
