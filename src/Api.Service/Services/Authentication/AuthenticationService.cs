@@ -6,7 +6,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Api.Domain.Dtos.Token;
 using Api.Domain.Entities.User;
 using Api.Domain.Interfaces.Services;
 using Microsoft.IdentityModel.Tokens;
@@ -41,7 +40,7 @@ namespace Api.Service.Services.Authentication
         }
 
 
-        public static TokenDto? ValidateAndDecodeToken(string token)
+        public static Tuple<Guid, string> ValidateAndDecodeToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -50,7 +49,6 @@ namespace Api.Service.Services.Authentication
             {
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
-                    // IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -64,26 +62,16 @@ namespace Api.Service.Services.Authentication
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
 
-                // foreach (var claim in jwtToken.Claims) {
-                //     Console.WriteLine(claim.Type + " " + claim.Value);
-                // } 
-
-
 
                 var userId = Guid.Parse(jwtToken.Claims.ToList().First(x => x.Type == JwtRegisteredClaimNames.NameId).Value);
 
                 var userRole = jwtToken.Claims.ToList().First(x => x.Type == "role").Value;
 
-
-
-
-                return new TokenDto { UserId = userId, Role = userRole! };
+                return new Tuple<Guid, string>(userId, userRole);
             }
             catch (Exception)
             {
-                // TODO: tratar este erro..., ver onde ele é retornado...
-                // Token validation failed
-                return null;
+                throw new UnauthorizedAccessException();
             }
         }
 

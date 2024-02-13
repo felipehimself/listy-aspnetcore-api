@@ -28,19 +28,10 @@ namespace Api.CrossCutting.Middlewares
         private static void AttachUserToContext(HttpContext context, string token)
         {
 
-            var user = AuthenticationService.ValidateAndDecodeToken(token);
+            Tuple<Guid, string> item = AuthenticationService.ValidateAndDecodeToken(token);
 
-            if (user != null)
-            {
-
-
-                context.Items["UserId"] = user.UserId;
-                context.Items["Role"] = user.Role;
-            }
-            else
-            {
-                Console.Write("aaaa");
-            };
+            context.Items["UserId"] = item.Item1;
+            context.Items["Role"] = item.Item2;
 
 
         }
