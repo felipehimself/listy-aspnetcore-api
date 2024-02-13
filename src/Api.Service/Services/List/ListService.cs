@@ -57,8 +57,6 @@ namespace Api.Service.Services.List
 
             if (list.User.Id != userId) throw new UnauthorizedAccessException();
 
-            var userFromDb = list.User.Id;
-
             return await _listRepository.DeleteAsync(id);
         }
 
