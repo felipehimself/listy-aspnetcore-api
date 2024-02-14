@@ -100,5 +100,26 @@ namespace Api.Data.Repositories
 
 
         }
+
+        public async Task<bool> UpdatePasswordAsync(Guid userId, string currentPassword, string newPassword)
+        {
+
+            var user = await GetByIdAsync(userId);
+
+            var pwdMatch = PasswordEncryptor.VerifyPassword(user!.Password, currentPassword);
+
+            if (!pwdMatch) return false;
+
+            user.UpdatedAt = DateTime.UtcNow;
+            user.Password = PasswordEncryptor.Encrypt(newPassword);
+
+            _context.Entry(user).CurrentValues.SetValues(user);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+
+
+        }
     }
 }

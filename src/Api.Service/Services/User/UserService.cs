@@ -48,11 +48,9 @@ namespace Api.Service.Services.User
         {
             var entity = _mapper.Map<UserEntity>(user);
 
-            Tuple<UserEntity?, string> result = await _repository.CreateNewUserAsync(entity) ;
+            Tuple<UserEntity?, string> result = await _repository.CreateNewUserAsync(entity);
 
             if (result.Item1 == null) throw new CustomException(result.Item2, HttpStatusCode.NotAcceptable);
-            
-            // ?? throw new UserCreateException("Username ou email inválido");
 
             return _mapper.Map<UserCreateResultDto>(result.Item1);
 
@@ -70,6 +68,15 @@ namespace Api.Service.Services.User
             return _mapper.Map<UserUpdateResultDto>(result.Item1);
 
 
+        }
+
+        public async Task<bool> UpdatePassword(UserUpdatePasswordDto pwdDto)
+        {
+            var result = await _repository.UpdatePasswordAsync(pwdDto.UserId, pwdDto.CurrentPassword, pwdDto.NewPassword);
+
+            if (!result) throw new CustomException("Informações inválidas", HttpStatusCode.Unauthorized);
+
+            return result;
         }
     }
 }

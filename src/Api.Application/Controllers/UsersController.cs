@@ -124,13 +124,42 @@ namespace Api.Application.Controllers
                 if (!isDeleted) return NotFound();
 
 
-                return Ok(true);
+                return NoContent();
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 throw;
             }
+
+
+        }
+
+        [Authorize("Bearer")]
+        [HttpPut("update-password")]
+        public async Task<IActionResult> UpdatePassword(UserUpdatePasswordDto pwdDto)
+        {
+            var userId = new GetUserFromRequest(HttpContext).GetUserId();
+
+            pwdDto.UserId = userId;
+
+            try
+            {
+
+                return Ok(await _service.UpdatePassword(pwdDto));
+            }
+            catch (CustomException e)
+            {
+                Debug.WriteLine(e.Message);
+                return StatusCode((int)e.StatusCode, e.Message);
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+
 
 
         }
