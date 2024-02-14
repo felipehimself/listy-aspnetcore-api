@@ -10,5 +10,6 @@ namespace Api.Domain.Interfaces.Services
     public interface ICommentService
     {
         Task<CommentCreateResultDto> AddComment(CommentCreateDto comment);
+        Task<bool> DeleteComment(Guid commentId, Guid userId);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Api.CrossCutting.Helpers;
 using Api.Domain.Dtos.Comment;
@@ -45,6 +46,35 @@ namespace Api.Application.Controllers
                 throw;
             }
         }
+
+        [Authorize("Bearer")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteComment(Guid id)
+        {
+
+            var userId = new GetUserFromRequest(HttpContext).GetUserId();
+
+            try
+            {
+                return Ok(await _service.DeleteComment(id, userId));
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Debug.WriteLine(e.Message);
+                return StatusCode((int)HttpStatusCode.Unauthorized, e.Message);
+
+            }
+
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+
+            }
+
+
+        }
+
     }
 }
 

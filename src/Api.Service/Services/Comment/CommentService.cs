@@ -26,14 +26,26 @@ namespace Api.Service.Services.Comment
 
         public async Task<CommentCreateResultDto> AddComment(CommentCreateDto comment)
         {
- 
+
 
             var entity = _mapper.Map<CommentEntity>(comment);
-            
+
             var result = await _repository.AddAsync(entity);
 
             return _mapper.Map<CommentCreateResultDto>(result);
 
+
+        }
+
+        public async Task<bool> DeleteComment(Guid commentId, Guid userId)
+        {
+            var comment = await _repository.GetByIdAsync(commentId);
+
+            if (comment == null) return false;
+
+            if (comment.UserId != userId) throw new UnauthorizedAccessException();
+
+            return await _repository.DeleteAsync(commentId);
 
         }
     }
