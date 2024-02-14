@@ -68,9 +68,6 @@ namespace Api.Application.Controllers
         {
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            // if (userId == null) return Unauthorized();
-
-
             list.UserId = userId;
 
             try
@@ -103,8 +100,6 @@ namespace Api.Application.Controllers
 
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
-
-            // if (userId == null) return Unauthorized();
 
 
             try
@@ -141,8 +136,6 @@ namespace Api.Application.Controllers
 
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
-
-            // if (userId == null) return Unauthorized();
 
             list.UserId = userId;
 
