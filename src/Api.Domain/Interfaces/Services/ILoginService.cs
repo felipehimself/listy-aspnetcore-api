@@ -8,6 +8,6 @@ namespace Api.Domain.Interfaces.Services
 {
     public interface ILoginService
     {
-        Task<string?> Login(LoginDto user);
+        Task<string> Login(LoginDto user);
     }
 }

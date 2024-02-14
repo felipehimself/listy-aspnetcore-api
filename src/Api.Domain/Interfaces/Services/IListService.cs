@@ -11,8 +11,8 @@ namespace Api.Domain.Interfaces.Services
     {
         Task<ListCreateResultDto> AddList(ListCreateDto list);
         Task<IEnumerable<ListDto>> GetLists();
-        Task<ListSingleDto> GetList(Guid id);
-        Task<ListUpdateResultDto> UpdateList(ListUpdateDto list);
+        Task<ListSingleDto?> GetList(Guid id);
+        Task<ListUpdateResultDto?> UpdateList(ListUpdateDto list);
         Task<bool> DeleteList(Guid id, Guid userId);
     }
 }

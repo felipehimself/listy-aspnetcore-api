@@ -9,10 +9,12 @@ namespace Api.Domain.Interfaces.Repositories
 {
     public interface IListRepository : IGenericRepository<ListEntity>
     {
-        Task<ListEntity?> AddList(ListEntity list);
+        // Task<ListEntity?> AddList(ListEntity list);
         Task<IEnumerable<ListEntity>> GetLists();
         Task<ListEntity?> GetList(Guid id);
 
-        Task<ListEntity?> UpdateList(ListEntity list);
+        // Task<ListEntity?> UpdateList(ListEntity list);
+
+        Task<ListEntity?> GetListWithItems(Guid id);
     }
 }

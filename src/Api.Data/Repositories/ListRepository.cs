@@ -25,51 +25,51 @@ namespace Api.Data.Repositories
             _context = context;
         }
 
-        public async Task<ListEntity?> AddList(ListEntity list)
-        {
+        // public async Task<ListEntity?> AddList(ListEntity list)
+        // {
 
-            // todo:
-            // ver se é encessário pois será que o jwt ja nao pode validar?
-            // var isGuidValid = Guid.TryParse(list.UserId.ToString(), out _);
+        //     // todo:
+        //     // ver se é encessário pois será que o jwt ja nao pode validar?
+        //     // var isGuidValid = Guid.TryParse(list.UserId.ToString(), out _);
 
-            // if (!isGuidValid) return null;
+        //     // if (!isGuidValid) return null;
 
-            // var userExists = await _context.Users.AnyAsync(x => x.Id == list.UserId);
+        //     // var userExists = await _context.Users.AnyAsync(x => x.Id == list.UserId);
 
-            // if (!userExists) return null;
-
-
-            using var transaction = _context.Database.BeginTransaction();
-            try
-            {
-                var listId = Guid.NewGuid();
-                list.Id = listId;
-
-                var now = DateTime.UtcNow;
-                list.CreatedAt = now;
-
-                foreach (var item in list.ListItems)
-                {
-                    // item.Id = Guid.NewGuid();
-                    item.CreatedAt = now;
-                }
+        //     // if (!userExists) return null;
 
 
-                await _dbSet.AddAsync(list);
+        //     // using var transaction = _context.Database.BeginTransaction();
+        //     try
+        //     {
+        //         var listId = Guid.NewGuid();
+        //         list.Id = listId;
 
-                await _context.SaveChangesAsync();
+        //         var now = DateTime.UtcNow;
+        //         list.CreatedAt = now;
 
-                transaction.Commit();
+        //         foreach (var item in list.ListItems)
+        //         {
+        //             // item.Id = Guid.NewGuid();
+        //             item.CreatedAt = now;
+        //         }
 
-                return list;
-            }
-            catch (System.Exception)
-            {
 
-                transaction.Rollback();
-                throw;
-            }
-        }
+        //         await _dbSet.AddAsync(list);
+
+        //         await _context.SaveChangesAsync();
+
+        //         // transaction.Commit();
+
+        //         return list;
+        //     }
+        //     catch (System.Exception)
+        //     {
+
+        //         // transaction.Rollback();
+        //         throw;
+        //     }
+        // }
 
         public async Task<ListEntity?> GetList(Guid id)
         {
@@ -85,50 +85,58 @@ namespace Api.Data.Repositories
             return await _dbSet.Include(x => x.User).Include(x => x.ListItems).ToListAsync();
         }
 
-        public async Task<ListEntity?> UpdateList(ListEntity list)
+        public async Task<ListEntity?> GetListWithItems(Guid id)
         {
-            try
-            {
-
-                var listFromDb = await _dbSet.Include(x => x.ListItems).FirstOrDefaultAsync(x => x.Id == list.Id);
-
-                if (listFromDb == null) return null;
-
-                var now = DateTime.UtcNow;
-                list.UpdatedAt = now;
-
-
-                var updateListItems = listFromDb.ListItems.Select(itemFromdb =>
-                {
-                    var findItem = list.ListItems.First(itemInDto => itemInDto.Id == itemFromdb.Id);
-
-                    if (findItem != null)
-                    {
-
-                        itemFromdb.Content = findItem.Content;
-                        itemFromdb.UpdatedAt = now;
-                    }
-
-                    return itemFromdb;
-
-                }).ToList();
-
-
-                list.ListItems = updateListItems;
-
-                _context.Entry(listFromDb).CurrentValues.SetValues(list);
-
-                await _context.SaveChangesAsync();
-
-
-                return list;
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return await _dbSet.Include(x => x.ListItems).FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        // public async Task<ListEntity?> UpdateList(ListEntity list)
+        // {
+
+        //     // using var transaction = _context.Database.BeginTransaction();
+
+        //     try
+        //     {
+
+        //         var listFromDb = await _dbSet.Include(x => x.ListItems).FirstOrDefaultAsync(x => x.Id == list.Id);
+
+        //         // if (listFromDb == null) return null;
+
+        //         var now = DateTime.UtcNow;
+        //         list.UpdatedAt = now;
+
+
+        //         var updateListItems = listFromDb!.ListItems.Select(itemFromdb =>
+        //         {
+        //             var findItem = list.ListItems.First(itemInDto => itemInDto.Id == itemFromdb.Id);
+
+        //             if (findItem != null)
+        //             {
+
+        //                 itemFromdb.Content = findItem.Content;
+        //                 itemFromdb.UpdatedAt = now;
+        //             }
+
+        //             return itemFromdb;
+
+        //         }).ToList();
+
+
+        //         list.ListItems = updateListItems;
+
+        //         _context.Entry(listFromDb).CurrentValues.SetValues(list);
+
+        //         await _context.SaveChangesAsync();
+        //         // transaction.Commit();
+
+        //         return list;
+
+        //     }
+        //     catch (Exception)
+        //     {
+        //         // transaction.Rollback();
+        //         throw;
+        //     }
+        // }
     }
 }

@@ -42,9 +42,33 @@ namespace Api.Service.Services.List
 
             var entity = _mapper.Map<ListEntity>(list);
 
-            var result = await _listRepository.AddList(entity) ?? throw new CustomException("Usuário inválido", HttpStatusCode.NotAcceptable);
+            var now = DateTime.UtcNow;
+
+            var updatedItems = entity.ListItems.Select(item =>
+            {
+
+                item.CreatedAt = now;
+
+                return item;
+            });
+
+            entity.ListItems = updatedItems.ToList();
+
+            // foreach (var item in entity.ListItems)
+            // {
+            //     // item.Id = Guid.NewGuid();
+            //     item.CreatedAt = now;
+            // }
+
+            var result = await _listRepository.AddAsync(entity);
 
             return _mapper.Map<ListCreateResultDto>(result);
+
+            // var entity = _mapper.Map<ListEntity>(list);
+
+            // var result = await _listRepository.AddList(entity) ?? throw new CustomException("Usuário inválido", HttpStatusCode.NotAcceptable);
+
+            // return _mapper.Map<ListCreateResultDto>(result);
 
 
         }
@@ -60,20 +84,57 @@ namespace Api.Service.Services.List
             return await _listRepository.DeleteAsync(id);
         }
 
-        public async Task<ListSingleDto> GetList(Guid id)
+        public async Task<ListSingleDto?> GetList(Guid id)
         {
-            var entity = await _listRepository.GetList(id);
+            var entity = await _listRepository.GetList(id) ?? throw new CustomException("Id da lista inválido", HttpStatusCode.NotFound);
 
             return _mapper.Map<ListSingleDto>(entity);
 
         }
 
 
-        public async Task<ListUpdateResultDto> UpdateList(ListUpdateDto list)
+        public async Task<ListUpdateResultDto?> UpdateList(ListUpdateDto list)
         {
+
+
+            var listWithItems = await _listRepository.GetListWithItems(list.Id) ?? throw new CustomException("Id da lista inválido", HttpStatusCode.NotFound);
+
+            if (listWithItems.UserId != list.UserId) throw new UnauthorizedAccessException();
+
+
             var entity = _mapper.Map<ListEntity>(list);
 
-            var result = await _listRepository.UpdateList(entity) ?? throw new CustomException("Id da lista inválido", HttpStatusCode.NotFound);
+            var now = DateTime.UtcNow;
+
+            var updateListItems = listWithItems!.ListItems.Select(itemFromdb =>
+                {
+                    var findItem = list.ListItems.First(itemInDto => itemInDto.Id == itemFromdb.Id);
+
+                    if (findItem != null)
+                    {
+
+                        itemFromdb.Content = findItem.Content;
+                        itemFromdb.UpdatedAt = now;
+                    }
+
+                    return itemFromdb;
+
+                }).ToList();
+
+
+            entity.ListItems = updateListItems;
+
+            var result = await _listRepository.UpdateAsync(entity);
+
+            // var originalList = await _listRepository.GetByIdAsync(list.Id) ?? throw new CustomException("Id da lista inválido", HttpStatusCode.NotFound);
+
+
+            // if(originalList.UserId != list.UserId) throw new UnauthorizedAccessException();
+
+
+            // var entity = _mapper.Map<ListEntity>(list);
+
+            // var result = await _listRepository.UpdateList(entity) ?? throw new CustomException("Id da lista inválido", HttpStatusCode.NotFound);
 
             return _mapper.Map<ListUpdateResultDto>(result);
         }

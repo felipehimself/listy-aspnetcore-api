@@ -4,6 +4,7 @@ using Api.Domain.Entities.User;
 using Api.Domain.Exceptions;
 using Api.Domain.Interfaces.Repositories;
 using Api.Domain.Interfaces.Services;
+using Api.Service.Services.Security;
 using AutoMapper;
 
 namespace Api.Service.Services.User
@@ -13,6 +14,7 @@ namespace Api.Service.Services.User
 
         private readonly IUserRepository _repository;
         private readonly IMapper _mapper;
+
 
 
         public UserService(IUserRepository repository, IMapper mapper)
@@ -46,37 +48,101 @@ namespace Api.Service.Services.User
 
         public async Task<UserCreateResultDto> AddUser(UserCreateDto user)
         {
+
+            var emailExists = await _repository.EmailExists(user.Email);
+            var usernameExists = await _repository.UserNameExists(user.Username);
+
+            if (emailExists && usernameExists) throw new CustomException("E-mail e nome do usuário já em uso", HttpStatusCode.NotAcceptable);
+
+            if (emailExists) throw new CustomException("E-mail já em uso", HttpStatusCode.NotAcceptable);
+
+            if (usernameExists) throw new CustomException("Nome de usuário já em uso", HttpStatusCode.NotAcceptable);
+
+
+            user.Password = PasswordEncryptorService.Encrypt(user.Password);
+
             var entity = _mapper.Map<UserEntity>(user);
 
-            Tuple<UserEntity?, string> result = await _repository.CreateNewUserAsync(entity);
+            var result = await _repository.AddAsync(entity);
 
-            if (result.Item1 == null) throw new CustomException(result.Item2, HttpStatusCode.NotAcceptable);
+            return _mapper.Map<UserCreateResultDto>(result);
 
-            return _mapper.Map<UserCreateResultDto>(result.Item1);
+
+
+
+            // var entity = _mapper.Map<UserEntity>(user);
+
+            // Tuple<UserEntity?, string> result = await _repository.CreateNewUserAsync(entity);
+
+            // if (result.Item1 == null) throw new CustomException(result.Item2, HttpStatusCode.NotAcceptable);
+
+            // return _mapper.Map<UserCreateResultDto>(result.Item1);
 
         }
 
         public async Task<UserUpdateResultDto?> UpdateUser(UserUpdateDto user)
         {
+            var userFromDb = await _repository.GetByIdAsync(user.Id) ?? throw new CustomException("Informações inválidas", HttpStatusCode.NotAcceptable);
 
-            var entity = _mapper.Map<UserEntity>(user);
+            var emailInUse = await _repository.GetByEmailAsync(user.Email);
+            var usernameInUse = await _repository.GetByUsernameAsync(user.Username);
 
-            Tuple<UserEntity?, string> result = await _repository.UpdateUserAsync(entity);
+            if (emailInUse != null && emailInUse.Id != user.Id && usernameInUse != null && usernameInUse.Id != user.Id) throw new CustomException("E-mail e nome de usuário já em uso", HttpStatusCode.NotAcceptable);
 
-            if (result.Item1 == null) throw new CustomException(result.Item2, HttpStatusCode.NotAcceptable);
+            if (emailInUse != null && emailInUse.Id != user.Id) throw new CustomException("E-mail já em uso", HttpStatusCode.NotAcceptable);
 
-            return _mapper.Map<UserUpdateResultDto>(result.Item1);
+            if (usernameInUse != null && usernameInUse.Id != user.Id) throw new CustomException("Nome de usuário já em uso", HttpStatusCode.NotAcceptable);
+
+            // userFromDb.UpdatedAt = DateTime.UtcNow;
+            userFromDb.Name = user.Name;
+            userFromDb.Username = user.Username;
+            userFromDb.Email = user.Email;
+
+
+
+            // var entity = _mapper.Map<UserEntity>(user);
+
+            // entity.Id = user.Id;
+            // entity.UpdatedAt = DateTime.UtcNow;
+            // entity.CreatedAt = userFromDb!.CreatedAt;
+            // entity.Role = userFromDb.Role;
+
+            // userFromDb.Email = user.Email;
+            // userFromDb.Name = user.Name;
+            // userFromDb.Username = user.Username;
+
+            var result = await _repository.UpdateAsync(userFromDb);
+
+            return _mapper.Map<UserUpdateResultDto>(result);
+
+
+            // Tuple<UserEntity?, string> result = await _repository.UpdateUserAsync(entity);
+
+            // if (result.Item1 == null) throw new CustomException(result.Item2, HttpStatusCode.NotAcceptable);
+
+            // return _mapper.Map<UserUpdateResultDto>(result.Item1);
 
 
         }
 
-        public async Task<bool> UpdatePassword(UserUpdatePasswordDto pwdDto)
+        public async Task UpdatePassword(UserUpdatePasswordDto pwdDto)
         {
-            var result = await _repository.UpdatePasswordAsync(pwdDto.UserId, pwdDto.CurrentPassword, pwdDto.NewPassword);
+            var user = await _repository.GetByIdAsync(pwdDto.UserId) ?? throw new CustomException("Usuário inválido", HttpStatusCode.Unauthorized);
 
-            if (!result) throw new CustomException("Informações inválidas", HttpStatusCode.Unauthorized);
+            var pwdMatch = PasswordEncryptorService.VerifyPassword(user.Password, pwdDto.CurrentPassword);
 
-            return result;
+            if (!pwdMatch) throw new CustomException("Senha atual incorreta", HttpStatusCode.Unauthorized);
+
+            user.Password = PasswordEncryptorService.Encrypt(pwdDto.NewPassword);
+
+            await _repository.UpdateAsync(user);
+
+
+            // var result = await _repository.UpdatePasswordAsync(pwdDto.UserId, pwdDto.CurrentPassword, pwdDto.NewPassword);
+
+            // if (!result) throw new CustomException("Informações inválidas", HttpStatusCode.Unauthorized);
+
+            // return result;
         }
     }
 }

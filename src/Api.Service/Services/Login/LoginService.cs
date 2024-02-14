@@ -7,6 +7,7 @@ using Api.Domain.Dtos.Login;
 using Api.Domain.Exceptions;
 using Api.Domain.Interfaces.Repositories;
 using Api.Domain.Interfaces.Services;
+using Api.Service.Services.Security;
 
 namespace Api.Service.Services.Login
 {
@@ -22,15 +23,35 @@ namespace Api.Service.Services.Login
             _authenticationService = authenticationService;
         }
 
-        public async Task<string?> Login(LoginDto user)
+        public async Task<string> Login(LoginDto user)
         {
 
-            var userfromDb = await _repository.Login(user.Email, user.Password) ?? throw new CustomException("E-mail ou senha inválidos", HttpStatusCode.Unauthorized);
+            var userFromDb = await _repository.GetByEmailAsync(user.Email) ?? throw new CustomException("E-mail ou senha inválidos", HttpStatusCode.Unauthorized);
+
+            var pwdMatch = PasswordEncryptorService.VerifyPassword(userFromDb.Password, user.Password);
+
+            if (!pwdMatch) throw new CustomException("E-mail ou senha inválidos", HttpStatusCode.Unauthorized);
+
+            return _authenticationService.GenerateJwtToken(userFromDb.Id, userFromDb.Role);
 
 
-            var token = _authenticationService.GenerateJwtToken(userfromDb.Id, userfromDb.Role);
+            // return token;
 
-            return token;
+            // ? new UserEntity { Id = userFromDb.Id, Role = userFromDb.Role } : null;
+
+
+            // var userfromDb = await _repository.GetByEmailAsync(user.Email) ?? throw new CustomException("E-mail ou senha inválidos", HttpStatusCode.Unauthorized);
+
+            // var pwdMatch = PasswordEncryptorService.VerifyPassword(user.Password, currentPassword);
+
+
+
+            // // var userfromDb = await _repository.Login(user.Email, user.Password) ?? throw new CustomException("E-mail ou senha inválidos", HttpStatusCode.Unauthorized);
+
+
+            // var token = _authenticationService.GenerateJwtToken(userfromDb.Id, userfromDb.Role);
+
+            // return token;
 
         }
     }

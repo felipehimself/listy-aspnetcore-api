@@ -11,6 +11,6 @@ namespace Api.Domain.Interfaces.Services
         Task<UserUpdateResultDto?> UpdateUser(UserUpdateDto user);
         Task<bool> DeleteUser(Guid id);
         Task<IEnumerable<UserDto>> GetUsers();
-        Task<bool> UpdatePassword(UserUpdatePasswordDto pwdDto);
+        Task UpdatePassword(UserUpdatePasswordDto pwdDto);
     }
 }
