@@ -92,7 +92,10 @@ namespace Api.Application.Controllers
 
             try
             {
-                return Ok(await _service.UpdateUser(user));
+                var result = await _service.UpdateUser(user);
+
+                return (result == null) ? NotFound() : NoContent();
+
             }
 
             catch (CustomException e)
@@ -119,12 +122,11 @@ namespace Api.Application.Controllers
 
             try
             {
-                var isDeleted = await _service.DeleteUser(id);
+                var deleted = await _service.DeleteUser(id);
 
-                if (!isDeleted) return NotFound();
+                return deleted ? NoContent() : NotFound();
 
 
-                return NoContent();
             }
             catch (Exception e)
             {
@@ -145,8 +147,8 @@ namespace Api.Application.Controllers
 
             try
             {
-
-                return Ok(await _service.UpdatePassword(pwdDto));
+                await _service.UpdatePassword(pwdDto);
+                return NoContent();
             }
             catch (CustomException e)
             {

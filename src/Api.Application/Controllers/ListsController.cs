@@ -104,11 +104,10 @@ namespace Api.Application.Controllers
 
             try
             {
-                var result = await _service.DeleteList(id, userId);
+                var deleted = await _service.DeleteList(id, userId);
 
-                if (!result) return NotFound();
+                return deleted ? NoContent() : NotFound();
 
-                return Ok(true);
 
             }
 

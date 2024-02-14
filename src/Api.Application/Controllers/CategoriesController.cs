@@ -63,11 +63,10 @@ namespace Api.Application.Controllers
         {
             try
             {
-                var result = await _service.DeleteCategory(id);
+                var deleted = await _service.DeleteCategory(id);
 
-                if (!result) return NotFound();
+                return deleted ? NoContent() : NotFound();
 
-                return Ok(result);
             }
             catch (Exception e)
             {

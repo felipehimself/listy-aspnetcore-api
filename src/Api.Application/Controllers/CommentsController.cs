@@ -31,7 +31,6 @@ namespace Api.Application.Controllers
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            // if (userId == null) return Unauthorized();
 
             try
             {
@@ -56,7 +55,10 @@ namespace Api.Application.Controllers
 
             try
             {
-                return Ok(await _service.DeleteComment(id, userId));
+                var deleted = await _service.DeleteComment(id, userId);
+
+                return deleted ? NoContent() : NotFound();
+
             }
             catch (UnauthorizedAccessException e)
             {
@@ -88,9 +90,8 @@ namespace Api.Application.Controllers
             {
                 var result = await _service.UpdateComment(comment);
 
-                if (!result) return NotFound();
+                return result ? Ok() : NotFound();
 
-                return Ok();
             }
 
             catch (UnauthorizedAccessException e)
