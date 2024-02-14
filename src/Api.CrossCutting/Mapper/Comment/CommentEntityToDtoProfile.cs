@@ -16,7 +16,7 @@ namespace Api.CrossCutting.Mapper.Comment
 
             CreateMap<CommentCreateDto, CommentEntity>();
             CreateMap<CommentEntity, CommentCreateResultDto>();
-
+            CreateMap<CommentUpdateDto, CommentEntity>();
 
 
         }

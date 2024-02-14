@@ -61,7 +61,7 @@ namespace Api.Application.Controllers
             catch (UnauthorizedAccessException e)
             {
                 Debug.WriteLine(e.Message);
-                return StatusCode((int)HttpStatusCode.Unauthorized, e.Message);
+                return StatusCode((int)HttpStatusCode.Forbidden, e.Message);
 
             }
 
@@ -74,6 +74,45 @@ namespace Api.Application.Controllers
 
 
         }
+
+        [Authorize("Bearer")]
+        [HttpPut]
+        public async Task<IActionResult> PutComment(CommentUpdateDto comment)
+        {
+
+            var userId = new GetUserFromRequest(HttpContext).GetUserId();
+
+            comment.UserId = userId;
+
+            try
+            {
+                var result = await _service.UpdateComment(comment);
+
+                if (!result) return NotFound();
+
+                return Ok();
+            }
+
+            catch (UnauthorizedAccessException e)
+            {
+
+                Debug.WriteLine(e.Message);
+                return StatusCode((int)HttpStatusCode.Forbidden, e.Message);
+
+            }
+
+
+            catch (Exception e)
+            {
+
+                Debug.WriteLine(e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+
+            }
+
+        }
+
+
 
     }
 }

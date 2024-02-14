@@ -48,5 +48,22 @@ namespace Api.Service.Services.Comment
             return await _repository.DeleteAsync(commentId);
 
         }
+
+        public async Task<bool> UpdateComment(CommentUpdateDto comment)
+        {
+            var originalComment = await _repository.GetByIdAsync(comment.Id);
+
+            if (originalComment == null) return false;
+
+            if (originalComment.UserId != comment.UserId) throw new UnauthorizedAccessException();
+
+            var entity = _mapper.Map<CommentEntity>(comment);
+
+            entity.ListId = originalComment.ListId;
+
+            await _repository.UpdateAsync(entity);
+
+            return true;
+        }
     }
 }

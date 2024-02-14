@@ -11,5 +11,7 @@ namespace Api.Domain.Interfaces.Services
     {
         Task<CommentCreateResultDto> AddComment(CommentCreateDto comment);
         Task<bool> DeleteComment(Guid commentId, Guid userId);
+
+        Task<bool> UpdateComment(CommentUpdateDto comment);
     }
 }
