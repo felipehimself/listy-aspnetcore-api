@@ -3,7 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Api.Domain\Domain.csproj" />
     <ProjectReference Include="..\Api.Data\Data.csproj" />
-    <ProjectReference Include="..\Api.Service\service.csproj" />
+    <ProjectReference Include="..\Api.Service\Service.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
