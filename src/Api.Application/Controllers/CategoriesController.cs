@@ -75,6 +75,25 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer", Roles = "admin")]
+        [HttpPut]
+        public async Task<IActionResult> Update(CategoryUpdateDto category)
+        {
+
+            try
+            {
+                var result = await _service.UpdateCategory(category);
+                
+                return result ? NoContent() : NotFound();
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
+
+        }
 
 
     }

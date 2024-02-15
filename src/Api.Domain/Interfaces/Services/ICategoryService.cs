@@ -14,5 +14,6 @@ namespace Api.Domain.Interfaces.Services
         Task<IEnumerable<CategoryDto>> GetCategories();
         Task<CategoryCreateResultDto> AddCategory(CategoryCreateDto category);
         Task<bool> DeleteCategory(Guid id);
+        Task<bool> UpdateCategory(CategoryUpdateDto category);
     }
 }

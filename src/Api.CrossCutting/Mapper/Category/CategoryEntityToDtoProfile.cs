@@ -16,12 +16,14 @@ namespace Api.CrossCutting.Mapper.Category
 
             CreateMap<CategoryEntity, CategoryDto>().ReverseMap();
 
-
             // Dto to Entity
             CreateMap<CategoryCreateDto, CategoryEntity>();
 
             // Entity to dto
             CreateMap<CategoryEntity, CategoryCreateResultDto>();
+
+
+            CreateMap<CategoryUpdateDto, CategoryEntity>();
 
         }
 

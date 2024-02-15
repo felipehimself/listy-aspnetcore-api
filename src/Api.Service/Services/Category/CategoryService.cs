@@ -43,5 +43,17 @@ namespace Api.Service.Services.Category
 
 
         }
+
+        public async Task<bool> UpdateCategory(CategoryUpdateDto category)
+        {
+            var entity = _mapper.Map<CategoryEntity>(category);
+
+            var result = await _repository.UpdateAsync(entity);
+
+            if (result == null) return false;
+
+            return true;
+
+        }
     }
 }
