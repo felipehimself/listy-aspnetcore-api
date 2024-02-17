@@ -34,25 +34,6 @@ namespace Api.Service.Services.Login
 
             return _authenticationService.GenerateJwtToken(userFromDb.Id, userFromDb.Role);
 
-
-            // return token;
-
-            // ? new UserEntity { Id = userFromDb.Id, Role = userFromDb.Role } : null;
-
-
-            // var userfromDb = await _repository.GetByEmailAsync(user.Email) ?? throw new CustomException("E-mail ou senha inválidos", HttpStatusCode.Unauthorized);
-
-            // var pwdMatch = PasswordEncryptorService.VerifyPassword(user.Password, currentPassword);
-
-
-
-            // // var userfromDb = await _repository.Login(user.Email, user.Password) ?? throw new CustomException("E-mail ou senha inválidos", HttpStatusCode.Unauthorized);
-
-
-            // var token = _authenticationService.GenerateJwtToken(userfromDb.Id, userfromDb.Role);
-
-            // return token;
-
         }
     }
 }

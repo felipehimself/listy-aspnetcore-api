@@ -9,13 +9,6 @@ namespace Api.Domain.Interfaces.Repositories
 {
     public interface IUserRepository : IGenericRepository<UserEntity>
     {
-        // Task<Tuple<UserEntity?, string>> CreateNewUserAsync(UserEntity user);
-        // Task<UserEntity?> Login(string email, string password);
-        // Task<Tuple<UserEntity?, string>> UpdateUserAsync(UserEntity user);
-
-        // Task<bool> ExistsEmailOrUserName(string email, string username);
-        // Task<bool> UpdatePasswordAsync(Guid userId, string currentPassword, string newPassword);
-
         Task<bool> EmailExists(string email);
         Task<bool> UserNameExists(string email);
 

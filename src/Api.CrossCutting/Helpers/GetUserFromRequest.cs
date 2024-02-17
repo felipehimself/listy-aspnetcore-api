@@ -20,13 +20,6 @@ namespace Api.CrossCutting.Helpers
 
             var userId = _context.Items["UserId"]!;
 
-            // if (userId == null) return null;
-
-
-            // var parserd = Guid.TryParse(userId!.ToString(), out Guid id);
-
-            // if (!parserd) return null;
-
             return Guid.Parse(userId.ToString()!);
 
 

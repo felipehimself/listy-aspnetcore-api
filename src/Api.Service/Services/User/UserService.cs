@@ -67,17 +67,6 @@ namespace Api.Service.Services.User
 
             return _mapper.Map<UserCreateResultDto>(result);
 
-
-
-
-            // var entity = _mapper.Map<UserEntity>(user);
-
-            // Tuple<UserEntity?, string> result = await _repository.CreateNewUserAsync(entity);
-
-            // if (result.Item1 == null) throw new CustomException(result.Item2, HttpStatusCode.NotAcceptable);
-
-            // return _mapper.Map<UserCreateResultDto>(result.Item1);
-
         }
 
         public async Task<UserUpdateResultDto?> UpdateUser(UserUpdateDto user)
@@ -93,35 +82,16 @@ namespace Api.Service.Services.User
 
             if (usernameInUse != null && usernameInUse.Id != user.Id) throw new CustomException("Nome de usuário já em uso", HttpStatusCode.NotAcceptable);
 
-            // userFromDb.UpdatedAt = DateTime.UtcNow;
+          
             userFromDb.Name = user.Name;
             userFromDb.Username = user.Username;
             userFromDb.Email = user.Email;
 
 
 
-            // var entity = _mapper.Map<UserEntity>(user);
-
-            // entity.Id = user.Id;
-            // entity.UpdatedAt = DateTime.UtcNow;
-            // entity.CreatedAt = userFromDb!.CreatedAt;
-            // entity.Role = userFromDb.Role;
-
-            // userFromDb.Email = user.Email;
-            // userFromDb.Name = user.Name;
-            // userFromDb.Username = user.Username;
-
             var result = await _repository.UpdateAsync(userFromDb);
 
             return _mapper.Map<UserUpdateResultDto>(result);
-
-
-            // Tuple<UserEntity?, string> result = await _repository.UpdateUserAsync(entity);
-
-            // if (result.Item1 == null) throw new CustomException(result.Item2, HttpStatusCode.NotAcceptable);
-
-            // return _mapper.Map<UserUpdateResultDto>(result.Item1);
-
 
         }
 
@@ -137,12 +107,6 @@ namespace Api.Service.Services.User
 
             await _repository.UpdateAsync(user);
 
-
-            // var result = await _repository.UpdatePasswordAsync(pwdDto.UserId, pwdDto.CurrentPassword, pwdDto.NewPassword);
-
-            // if (!result) throw new CustomException("Informações inválidas", HttpStatusCode.Unauthorized);
-
-            // return result;
         }
     }
 }

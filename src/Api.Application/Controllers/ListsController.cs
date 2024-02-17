@@ -75,7 +75,7 @@ namespace Api.Application.Controllers
                 return Ok(await _service.AddList(list));
 
             }
-            // catch (ListCreateException e)
+            
             catch (CustomException e)
 
             {

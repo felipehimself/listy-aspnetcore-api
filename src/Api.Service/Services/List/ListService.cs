@@ -54,21 +54,10 @@ namespace Api.Service.Services.List
 
             entity.ListItems = updatedItems.ToList();
 
-            // foreach (var item in entity.ListItems)
-            // {
-            //     // item.Id = Guid.NewGuid();
-            //     item.CreatedAt = now;
-            // }
-
+          
             var result = await _listRepository.AddAsync(entity);
 
             return _mapper.Map<ListCreateResultDto>(result);
-
-            // var entity = _mapper.Map<ListEntity>(list);
-
-            // var result = await _listRepository.AddList(entity) ?? throw new CustomException("Usuário inválido", HttpStatusCode.NotAcceptable);
-
-            // return _mapper.Map<ListCreateResultDto>(result);
 
 
         }
@@ -125,16 +114,6 @@ namespace Api.Service.Services.List
             entity.ListItems = updateListItems;
 
             var result = await _listRepository.UpdateAsync(entity);
-
-            // var originalList = await _listRepository.GetByIdAsync(list.Id) ?? throw new CustomException("Id da lista inválido", HttpStatusCode.NotFound);
-
-
-            // if(originalList.UserId != list.UserId) throw new UnauthorizedAccessException();
-
-
-            // var entity = _mapper.Map<ListEntity>(list);
-
-            // var result = await _listRepository.UpdateList(entity) ?? throw new CustomException("Id da lista inválido", HttpStatusCode.NotFound);
 
             return _mapper.Map<ListUpdateResultDto>(result);
         }
