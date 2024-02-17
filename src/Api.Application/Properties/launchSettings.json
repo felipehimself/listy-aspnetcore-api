@@ -20,7 +20,9 @@
         "DB_CONNECTION": "Server=localhost; initial catalog=listy_api; uid=root; pwd=123456",
         "DATABASE": "MySql",
         "MYSQL_VERSION": "8.0.34",
-        "MIGRATION": "APPLY"
+        "MIGRATION": "APPLY",
+        "IssuerSigningKey": "MySuperSecretKey12345678901234567890tKey@345",
+        "Pepper": "YourPepperValue1234"
       }
     },
     "IIS Express": {

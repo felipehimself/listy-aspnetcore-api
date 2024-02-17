@@ -81,7 +81,7 @@ public class Program
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = "https://localhost:5001",
                 ValidAudience = "listy-api",
-                IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("MySuperSecretKey12345678901234567890tKey@345"))
+                IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("IssuerSigningKey")!))
             };
         });
 

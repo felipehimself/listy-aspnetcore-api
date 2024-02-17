@@ -18,7 +18,7 @@ namespace Api.Service.Services.Authentication
         public string GenerateJwtToken(Guid userId, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("MySuperSecretKey12345678901234567890tKey@345");
+            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("IssuerSigningKey")!);
 
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -56,7 +56,7 @@ namespace Api.Service.Services.Authentication
                     ValidIssuer = "https://localhost:5001",
                     ValidAudience = "listy-api",
                     ClockSkew = TimeSpan.Zero,
-                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("MySuperSecretKey12345678901234567890tKey@345")) // todo: alterar para env
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("IssuerSigningKey")!))
 
                 }, out SecurityToken validatedToken);
 
