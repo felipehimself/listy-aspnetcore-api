@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Api.Domain.Interfaces.Services;
+using Api.Service.Services.Admin;
 using Api.Service.Services.Authentication;
 using Api.Service.Services.Category;
 using Api.Service.Services.Comment;
@@ -12,18 +13,19 @@ namespace Api.CrossCutting.Configs
 {
     public static class ConfigServices
     {
-        public static IServiceCollection AddApiServices(this IServiceCollection service)
+        public static IServiceCollection AddApiServices(this IServiceCollection services)
         {
 
 
-            service.AddScoped<IUserService, UserService>();
-            service.AddScoped<IListService, ListService>();
-            service.AddScoped<ICategoryService, CategoryService>();
-            service.AddScoped<ILoginService, LoginService>();
-            service.AddScoped<IAuthenticationService, AuthenticationService>();
-            service.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IListService, ListService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IAdminService, AdminService>();
 
-            return service;
+            return services;
 
         }
 
