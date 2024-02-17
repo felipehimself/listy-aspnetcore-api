@@ -22,7 +22,7 @@ namespace Api.Application.Controllers
         }
 
 
-        [Authorize("Bearer", Roles = "admin")]
+        [Authorize("Bearer", Roles = "super_admin")]
         [HttpPatch]
         public async Task<IActionResult> Patch(Guid userid)
         {
