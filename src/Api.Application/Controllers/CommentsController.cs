@@ -26,7 +26,7 @@ namespace Api.Application.Controllers
 
         [Authorize("Bearer")]
         [HttpPost]
-        public async Task<IActionResult> PostComment(CommentCreateDto comment)
+        public async Task<IActionResult> Post(CommentCreateDto comment)
         {
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
@@ -48,7 +48,7 @@ namespace Api.Application.Controllers
 
         [Authorize("Bearer")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteComment(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
@@ -79,7 +79,7 @@ namespace Api.Application.Controllers
 
         [Authorize("Bearer")]
         [HttpPut]
-        public async Task<IActionResult> PutComment(CommentUpdateDto comment)
+        public async Task<IActionResult> Put(CommentUpdateDto comment)
         {
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();

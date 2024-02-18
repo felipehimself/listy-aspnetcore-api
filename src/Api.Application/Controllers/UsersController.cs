@@ -30,6 +30,7 @@ namespace Api.Application.Controllers
         }
 
 
+        [Authorize("Bearer", Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -44,6 +45,7 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
@@ -138,8 +140,8 @@ namespace Api.Application.Controllers
         }
 
         [Authorize("Bearer")]
-        [HttpPut("update-password")]
-        public async Task<IActionResult> UpdatePassword(UserUpdatePasswordDto pwdDto)
+        [HttpPatch("update-password")]
+        public async Task<IActionResult> Patch(UserUpdatePasswordDto pwdDto)
         {
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
