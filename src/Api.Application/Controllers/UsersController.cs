@@ -70,7 +70,7 @@ namespace Api.Application.Controllers
                 return Ok(await _service.AddUser(user));
             }
 
-            catch (UserCreateException e)
+            catch (CustomException e)
             {
                 Debug.WriteLine(e.Message);
                 return StatusCode((int)HttpStatusCode.NotAcceptable, e.Message);
