@@ -91,6 +91,8 @@ public class Program
                    .RequireAuthenticatedUser()
                    .Build());
 
+        builder.Services.AddTransient<GlobalExeptionMiddleware>();
+
 
         var app = builder.Build();
 
@@ -102,6 +104,8 @@ public class Program
         }
 
         app.UseMiddleware<JwtMiddleware>();
+        app.UseMiddleware<GlobalExeptionMiddleware>();
+
         app.UseAuthentication();
         app.UseAuthorization();
 
