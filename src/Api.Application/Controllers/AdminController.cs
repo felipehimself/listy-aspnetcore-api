@@ -26,17 +26,10 @@ namespace Api.Application.Controllers
         [HttpPatch]
         public async Task<IActionResult> Patch(Guid userid)
         {
-            try
-            {
-                var result = await _service.ChangeUserRole(userid);
 
-                return result ? Ok() : NotFound();
-            }
-            catch (System.Exception)
-            {
+            var result = await _service.ChangeUserRole(userid);
 
-                throw;
-            }
+            return result ? Ok() : NotFound();
 
         }
     }

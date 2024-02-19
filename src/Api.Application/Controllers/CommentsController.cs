@@ -31,19 +31,10 @@ namespace Api.Application.Controllers
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
+            comment.UserId = userId;
 
-            try
-            {
-                comment.UserId = userId;
+            return Ok(await _service.AddComment(comment));
 
-                return Ok(await _service.AddComment(comment));
-            }
-            catch (Exception e)
-            {
-
-                Debug.WriteLine(e.Message);
-                throw;
-            }
         }
 
         [Authorize("Bearer")]
@@ -53,26 +44,10 @@ namespace Api.Application.Controllers
 
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
-            try
-            {
-                var deleted = await _service.DeleteComment(id, userId);
 
-                return deleted ? NoContent() : NotFound();
+            var deleted = await _service.DeleteComment(id, userId);
 
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)HttpStatusCode.Forbidden, e.Message);
-
-            }
-
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
-
-            }
+            return deleted ? NoContent() : NotFound();
 
 
         }
@@ -86,30 +61,9 @@ namespace Api.Application.Controllers
 
             comment.UserId = userId;
 
-            try
-            {
-                var result = await _service.UpdateComment(comment);
+            var result = await _service.UpdateComment(comment);
 
-                return result ? Ok() : NotFound();
-
-            }
-
-            catch (UnauthorizedAccessException e)
-            {
-
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)HttpStatusCode.Forbidden, e.Message);
-
-            }
-
-
-            catch (Exception e)
-            {
-
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
-
-            }
+            return result ? Ok() : NotFound();
 
         }
 

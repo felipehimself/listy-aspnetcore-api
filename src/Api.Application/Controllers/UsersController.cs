@@ -34,31 +34,19 @@ namespace Api.Application.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            try
-            {
-                return Ok(await _service.GetUsers());
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
+
+            return Ok(await _service.GetUsers());
+
         }
 
         [Authorize("Bearer")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            try
-            {
-                return Ok(await _service.GetUser(id));
-            }
-            catch (Exception e)
-            {
 
-                Debug.WriteLine(e.Message);
-                throw;
-            }
+            return Ok(await _service.GetUser(id));
+
+
         }
 
         [HttpPost]
@@ -91,19 +79,10 @@ namespace Api.Application.Controllers
 
             if (userIdOnRequest != id) return Unauthorized();
 
-            try
-            {
-                var deleted = await _service.DeleteUser(id);
 
-                return deleted ? NoContent() : NotFound();
+            var deleted = await _service.DeleteUser(id);
 
-
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
+            return deleted ? NoContent() : NotFound();
 
 
         }

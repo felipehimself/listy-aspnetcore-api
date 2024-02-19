@@ -29,15 +29,9 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> GetAll()
         {
 
-            try
-            {
-                return Ok(await _service.GetLists());
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
+
+            return Ok(await _service.GetLists());
+
 
         }
 

@@ -27,15 +27,10 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> GetAll()
         {
 
-            try
-            {
-                return Ok(await _service.GetCategories());
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
+
+            return Ok(await _service.GetCategories());
+
+
         }
 
         [Authorize("Bearer", Roles = "admin")]
@@ -43,16 +38,7 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> Post(CategoryCreateDto category)
         {
 
-            try
-            {
-                return Ok(await _service.AddCategory(category));
-
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
+            return Ok(await _service.AddCategory(category));
 
         }
 
@@ -61,18 +47,11 @@ namespace Api.Application.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            try
-            {
-                var deleted = await _service.DeleteCategory(id);
 
-                return deleted ? NoContent() : NotFound();
+            var deleted = await _service.DeleteCategory(id);
 
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
+            return deleted ? NoContent() : NotFound();
+
         }
 
         [Authorize("Bearer", Roles = "admin")]
@@ -80,21 +59,11 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> Update(CategoryUpdateDto category)
         {
 
-            try
-            {
-                var result = await _service.UpdateCategory(category);
-                
-                return result ? NoContent() : NotFound();
-            }
-            catch (System.Exception)
-            {
+            var result = await _service.UpdateCategory(category);
 
-                throw;
-            }
-
+            return result ? NoContent() : NotFound();
 
         }
-
 
     }
 }
