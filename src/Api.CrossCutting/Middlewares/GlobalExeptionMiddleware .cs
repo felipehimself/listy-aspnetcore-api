@@ -42,6 +42,22 @@ namespace Api.CrossCutting.Middlewares
 
             }
 
+            catch (UnauthorizedAccessException e)
+            {
+
+                _logger.LogError(e, message: e.Message);
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.ContentType = "application/json";
+
+                ProblemDetails problem = new()
+                {
+                    Status = (int)HttpStatusCode.Unauthorized,
+                    Detail = "Sem permissão",
+                };
+
+                await context.Response.WriteAsJsonAsync(problem);
+            }
+
             catch (Exception e)
             {
                 _logger.LogError(e, message: e.Message);
