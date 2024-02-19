@@ -63,6 +63,3 @@ This API provides a platform for users to create, share, and discover lists of r
 
 Contributions are welcome! Feel free to open issues or pull requests for any enhancements or bug fixes.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
