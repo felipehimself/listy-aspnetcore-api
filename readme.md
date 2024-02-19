@@ -62,4 +62,3 @@ This API provides a platform for users to create, share, and discover lists of r
 ## Contributing
 
 Contributions are welcome! Feel free to open issues or pull requests for any enhancements or bug fixes.
-
