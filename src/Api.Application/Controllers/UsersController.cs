@@ -65,22 +65,7 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> Post(UserCreateDto user)
         {
 
-            try
-            {
-                return Ok(await _service.AddUser(user));
-            }
-
-            catch (CustomException e)
-            {
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)HttpStatusCode.NotAcceptable, e.Message);
-            }
-
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
+            return Ok(await _service.AddUser(user));
 
         }
 
@@ -92,26 +77,10 @@ namespace Api.Application.Controllers
 
             user.Id = userId;
 
-            try
-            {
-                var result = await _service.UpdateUser(user);
+            var result = await _service.UpdateUser(user);
 
-                return (result == null) ? NotFound() : NoContent();
+            return (result == null) ? NotFound() : NoContent();
 
-            }
-
-            catch (CustomException e)
-            {
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)e.StatusCode, e.Message);
-
-            }
-
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
         }
 
         [Authorize("Bearer")]
@@ -147,23 +116,8 @@ namespace Api.Application.Controllers
 
             pwdDto.UserId = userId;
 
-            try
-            {
-                await _service.UpdatePassword(pwdDto);
-                return NoContent();
-            }
-            catch (CustomException e)
-            {
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)e.StatusCode, e.Message);
-
-            }
-
-            catch (Exception)
-            {
-                throw;
-            }
-
+            await _service.UpdatePassword(pwdDto);
+            return NoContent();
 
 
         }

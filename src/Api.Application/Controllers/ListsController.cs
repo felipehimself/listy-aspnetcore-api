@@ -45,20 +45,9 @@ namespace Api.Application.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
+            return Ok(await _service.GetList(id));
 
-            try
-            {
-                var result = await _service.GetList(id);
-                if (result == null) return NotFound();
 
-                return Ok(await _service.GetList(id));
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-
-                throw;
-            }
 
         }
 
@@ -70,25 +59,7 @@ namespace Api.Application.Controllers
 
             list.UserId = userId;
 
-            try
-            {
-                return Ok(await _service.AddList(list));
-
-            }
-            
-            catch (CustomException e)
-
-            {
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)e.StatusCode, e.Message);
-
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-
-                throw;
-            }
+            return Ok(await _service.AddList(list));
 
 
         }
@@ -98,32 +69,11 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
 
-
             var userId = new GetUserFromRequest(HttpContext).GetUserId();
 
+            var deleted = await _service.DeleteList(id, userId);
 
-            try
-            {
-                var deleted = await _service.DeleteList(id, userId);
-
-                return deleted ? NoContent() : NotFound();
-
-
-            }
-
-            catch (CustomException e)
-            {
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)e.StatusCode, e.Message);
-            }
-
-
-            catch (Exception e)
-            {
-
-                Debug.WriteLine(e.Message);
-                throw;
-            }
+            return deleted ? NoContent() : NotFound();
 
 
         }
@@ -138,30 +88,11 @@ namespace Api.Application.Controllers
 
             list.UserId = userId;
 
-            try
-            {
-                await _service.UpdateList(list);
+            await _service.UpdateList(list);
 
-                return NoContent();
-
-            }
-
-            catch (CustomException e)
-
-            {
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)e.StatusCode, e.Message);
-
-            }
-
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
+            return NoContent();
 
         }
-
 
     }
 }

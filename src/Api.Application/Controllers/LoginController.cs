@@ -30,27 +30,8 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> Post(LoginDto credentials)
         {
 
-            try
-            {
-                var token = await _service.Login(credentials);
-                return Ok(new { token });
-            }
-
-            catch (CustomException e)
-            {
-
-                Debug.WriteLine(e.Message);
-                return StatusCode((int)e.StatusCode, e.Message);
-
-
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-
-                throw;
-            }
-
+            var token = await _service.Login(credentials);
+            return Ok(new { token });
 
         }
 
